@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Prime Insurance - Complete Your Profile{% endblock %}
+
+{% block content %}
+<div class="onboarding-wizard" id="onboardingWizard">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <!-- Progress Bar -->
+                        <div class="progress mb-4">
+                            <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+                        </div>
+
+                        <!-- Step 1: Welcome -->
+                        <div class="onboarding-step" data-step="1">
+                            <h2 class="text-center mb-4">Welcome to Prime Insurance!</h2>
+                            <p class="text-center">Let's get you started with your insurance journey.</p>
+                            <div class="text-center mt-4">
+                                <button class="btn btn-primary next-step">Get Started</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Complete Profile -->
+                        <div class="onboarding-step" data-step="2" style="display: none;">
+                            <h3 class="mb-4">Complete Your Profile</h3>
+                            <form id="profileForm">
+                                <div class="mb-3">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="form-control" name="phone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Address</label>
+                                    <input type="text" class="form-control" name="address" required>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button type="button" class="btn btn-secondary prev-step">Back</button>
+                                    <button type="submit" class="btn btn-primary next-step">Continue</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Step 3: Insurance Interests -->
+                        <div class="onboarding-step" data-step="3" style="display: none;">
+                            <h3 class="mb-4">What brings you here today?</h3>
+                            <div class="insurance-options">
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="auto" id="autoInsurance">
+                                    <label class="form-check-label" for="autoInsurance">
+                                        Auto Insurance
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="home" id="homeInsurance">
+                                    <label class="form-check-label" for="homeInsurance">
+                                        Home Insurance
+                                    </label>
+                                </div>
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" value="life" id="lifeInsurance">
+                                    <label class="form-check-label" for="lifeInsurance">
+                                        Life Insurance
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button class="btn btn-secondary prev-step">Back</button>
+                                <button class="btn btn-primary next-step">Continue</button>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Feature Tour -->
+                        <div class="onboarding-step" data-step="4" style="display: none;">
+                            <h3 class="mb-4">Explore Our Features</h3>
+                            <div class="feature-highlights">
+                                <div class="feature-item mb-4">
+                                    <h5><i class="fas fa-calculator"></i> Insurance Calculators</h5>
+                                    <p>Get instant premium estimates with our easy-to-use calculators.</p>
+                                </div>
+                                <div class="feature-item mb-4">
+                                    <h5><i class="fas fa-newspaper"></i> Insurance Tips</h5>
+                                    <p>Stay informed with our latest insurance tips and resources.</p>
+                                </div>
+                                <div class="feature-item mb-4">
+                                    <h5><i class="fas fa-comments"></i> Live Support</h5>
+                                    <p>Get help anytime through our live chat support.</p>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button class="btn btn-secondary prev-step">Back</button>
+                                <button class="btn btn-primary complete-onboarding">Get Started!</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const wizard = document.getElementById('onboardingWizard');
+    const progressBar = document.getElementById('progressBar');
+    const steps = wizard.querySelectorAll('.onboarding-step');
+    let currentStep = 1;
+
+    function updateProgress() {
+        const progress = ((currentStep - 1) / (steps.length - 1)) * 100;
+        progressBar.style.width = `${progress}%`;
+    }
+
+    function showStep(step) {
+        steps.forEach(s => s.style.display = 'none');
+        wizard.querySelector(`[data-step="${step}"]`).style.display = 'block';
+        currentStep = step;
+        updateProgress();
+    }
+
+    // Next step buttons
+    wizard.querySelectorAll('.next-step').forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (currentStep < steps.length) {
+                showStep(currentStep + 1);
+            }
+        });
+    });
+
+    // Previous step buttons
+    wizard.querySelectorAll('.prev-step').forEach(button => {
+        button.addEventListener('click', function() {
+            if (currentStep > 1) {
+                showStep(currentStep - 1);
+            }
+        });
+    });
+
+    // Handle profile form submission
+    const profileForm = document.getElementById('profileForm');
+    if (profileForm) {
+        profileForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const formData = new FormData(profileForm);
+            try {
+                const response = await fetch('/onboarding/save-profile', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+                if (response.ok) {
+                    showStep(currentStep + 1);
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+            }
+        });
+    }
+
+    // Complete onboarding
+    wizard.querySelector('.complete-onboarding').addEventListener('click', async function() {
+        try {
+            const response = await fetch('/onboarding/complete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+            if (response.ok) {
+                window.location.href = '/profile';
+            }
+        } catch (error) {
+            console.error('Error completing onboarding:', error);
+        }
+    });
+
+    // Initialize wizard
+    showStep(1);
+});
+</script>
+
+<style>
+.onboarding-wizard .progress {
+    height: 10px;
+    border-radius: 5px;
+}
+
+.onboarding-step {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.feature-item {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: transform 0.2s;
+}
+
+.feature-item:hover {
+    transform: translateY(-2px);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+{% endblock %}

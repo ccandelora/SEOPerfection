@@ -13,6 +13,8 @@ class User(UserMixin, db.Model):
     phone = db.Column(db.String(15))
     address = db.Column(db.String(256))
     role = db.Column(db.String(20), default='user')  # 'user' or 'editor'
+    onboarding_completed = db.Column(db.Boolean, default=False)
+    onboarding_step = db.Column(db.Integer, default=0)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     policies = db.relationship('Policy', backref='policyholder', lazy='dynamic')
 

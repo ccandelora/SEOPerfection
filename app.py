@@ -43,7 +43,7 @@ def load_user(id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('profile'))
+        return redirect(url_for('onboarding'))
     
     form = LoginForm()
     if form.validate_on_submit():
@@ -82,6 +82,30 @@ def register():
         return redirect(url_for('login'))
     
     return render_template('auth/register.html', title='Register', form=form)
+
+@app.route('/onboarding')
+@login_required
+def onboarding():
+    if current_user.onboarding_completed:
+        return redirect(url_for('profile'))
+    return render_template('auth/onboarding.html')
+
+@app.route('/onboarding/save-profile', methods=['POST'])
+@login_required
+def save_onboarding_profile():
+    data = request.get_json()
+    current_user.phone = data.get('phone')
+    current_user.address = data.get('address')
+    current_user.onboarding_step = 2
+    db.session.commit()
+    return jsonify({'success': True})
+
+@app.route('/onboarding/complete', methods=['POST'])
+@login_required
+def complete_onboarding():
+    current_user.onboarding_completed = True
+    db.session.commit()
+    return jsonify({'success': True})
 
 @app.route('/logout')
 @login_required
