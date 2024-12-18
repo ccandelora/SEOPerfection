@@ -67,14 +67,7 @@ class ChatMessage(db.Model):
 
     user = db.relationship('User', backref=db.backref('chat_messages', lazy='dynamic'))
 
-class Comment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.Text, nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    post_id = db.Column(db.Integer, db.ForeignKey('blog_post.id'), nullable=False)
-    user = db.relationship('User', backref=db.backref('comments', lazy='dynamic'))
+
 
 class PostLike(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -105,6 +98,6 @@ class BlogPost(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     author = db.relationship('User', backref=db.backref('blog_posts', lazy='dynamic'))
-    comments = db.relationship('Comment', backref='post', lazy='dynamic', cascade='all, delete-orphan')
+    
     likes = db.relationship('PostLike', backref='post', lazy='dynamic', cascade='all, delete-orphan')
     saved_by = db.relationship('SavedPost', backref='post', lazy='dynamic', cascade='all, delete-orphan')

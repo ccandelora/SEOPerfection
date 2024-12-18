@@ -32,8 +32,8 @@ login_manager.login_message = 'Please log in to access this page.'
 
 db.init_app(app)
 
-from models import User, Policy, BlogPost, Comment, PostLike, SavedPost
-from forms import LoginForm, RegistrationForm, ContactForm, QuoteForm, BlogPostForm, CommentForm
+from models import User, Policy, BlogPost, PostLike, SavedPost
+from forms import LoginForm, RegistrationForm, ContactForm, QuoteForm, BlogPostForm
 
 @login_manager.user_loader
 def load_user(id):
@@ -304,23 +304,9 @@ def blog():
 @app.route('/blog/<string:slug>')
 def blog_post(slug):
     post = BlogPost.query.filter_by(slug=slug, published=True).first_or_404()
-    comment_form = CommentForm()
-    return render_template('blog/post.html', post=post, comment_form=comment_form)
+    return render_template('blog/post.html', post=post)
 
-@app.route('/blog/<string:slug>/comment', methods=['POST'])
-@login_required
-def add_comment(slug):
-    post = BlogPost.query.filter_by(slug=slug, published=True).first_or_404()
-    form = CommentForm()
-    if form.validate_on_submit():
-        comment = Comment(
-            content=form.content.data,
-            user_id=current_user.id,
-            post_id=post.id
-        )
-        db.session.add(comment)
-        db.session.commit()
-        flash('Your comment has been posted!', 'success')
+
 @app.route('/blog/<string:slug>/like', methods=['POST'])
 @login_required
 def like_post(slug):

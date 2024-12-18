@@ -120,6 +120,4 @@ class BlogPostForm(FlaskForm):
     published = BooleanField('Publish')
     submit = SubmitField('Save Post')
 
-class CommentForm(FlaskForm):
-    content = TextAreaField('Comment', validators=[DataRequired(), Length(min=1, max=1000)])
-    submit = SubmitField('Post Comment')
+

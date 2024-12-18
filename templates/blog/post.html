@@ -42,6 +42,34 @@
                     {{ post.content | safe }}
                 </div>
 
+
+                <!-- Post Actions -->
+                <div class="post-actions mt-4 mb-4">
+                    <div class="d-flex gap-3 align-items-center">
+                        {% if current_user.is_authenticated %}
+                            <button class="btn btn-outline-primary btn-sm like-button" 
+                                    data-post-slug="{{ post.slug }}"
+                                    data-liked="{{ 'true' if current_user.post_likes.filter_by(post_id=post.id).first() else 'false' }}">
+                                <i class="fas fa-heart"></i> 
+                                <span class="likes-count">{{ post.likes.count() }}</span> Likes
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm save-button"
+                                    data-post-slug="{{ post.slug }}"
+                                    data-saved="{{ 'true' if current_user.saved_posts.filter_by(post_id=post.id).first() else 'false' }}">
+                                <i class="fas fa-bookmark"></i> 
+                                <span class="save-text">{{ 'Saved' if current_user.saved_posts.filter_by(post_id=post.id).first() else 'Save for Later' }}</span>
+                            </button>
+                        {% else %}
+                            <a href="{{ url_for('login', next=request.path) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-heart"></i> {{ post.likes.count() }} Likes
+                            </a>
+                            <a href="{{ url_for('login', next=request.path) }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-bookmark"></i> Save for Later
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
                 <!-- Comments Section -->
                 <div class="comments-section mt-5">
                     <h3>Comments</h3>
@@ -74,32 +102,32 @@
                     </div>
                 </div>
 
-                <!-- Post Actions -->
-                <div class="post-actions mt-4 mb-4">
-                    <div class="d-flex gap-3 align-items-center">
-                        {% if current_user.is_authenticated %}
-                            <button class="btn btn-outline-primary btn-sm like-button" 
-                                    data-post-slug="{{ post.slug }}"
-                                    data-liked="{{ 'true' if current_user.post_likes.filter_by(post_id=post.id).first() else 'false' }}">
-                                <i class="fas fa-heart"></i> 
-                                <span class="likes-count">{{ post.likes.count() }}</span> Likes
-                            </button>
-                            <button class="btn btn-outline-secondary btn-sm save-button"
-                                    data-post-slug="{{ post.slug }}"
-                                    data-saved="{{ 'true' if current_user.saved_posts.filter_by(post_id=post.id).first() else 'false' }}">
-                                <i class="fas fa-bookmark"></i> 
-                                <span class="save-text">{{ 'Saved' if current_user.saved_posts.filter_by(post_id=post.id).first() else 'Save for Later' }}</span>
-                            </button>
-                        {% else %}
-                            <a href="{{ url_for('login', next=request.path) }}" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-heart"></i> {{ post.likes.count() }} Likes
-                            </a>
-                            <a href="{{ url_for('login', next=request.path) }}" class="btn btn-outline-secondary btn-sm">
-                                <i class="fas fa-bookmark"></i> Save for Later
-                            </a>
-                        {% endif %}
+                <!-- Social Sharing -->
+                <div class="share-buttons mt-4">
+                    <h5>Share this article:</h5>
+                    <div class="d-flex gap-2">
+                        <a href="https://twitter.com/intent/tweet?url={{ url_for('blog_post', slug=post.slug, _external=True) }}&text={{ post.title }}"
+                           class="btn btn-outline-primary"
+                           target="_blank">
+                            <i class="fab fa-twitter"></i> Tweet
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ url_for('blog_post', slug=post.slug, _external=True) }}"
+                           class="btn btn-outline-primary"
+                           target="_blank">
+                            <i class="fab fa-facebook"></i> Share
+                        </a>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ url_for('blog_post', slug=post.slug, _external=True) }}&title={{ post.title }}"
+                           class="btn btn-outline-primary"
+                           target="_blank">
+                            <i class="fab fa-linkedin"></i> Share
+                        </a>
                     </div>
                 </div>
+            </article>
+        </div>
+    </div>
+</div>
+{% endblock %}
 
 {% block scripts %}
 <script>
@@ -172,31 +200,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-{% endblock %}
-
-                <!-- Social Sharing -->
-                <div class="share-buttons mt-4">
-                    <h5>Share this article:</h5>
-                    <div class="d-flex gap-2">
-                        <a href="https://twitter.com/intent/tweet?url={{ url_for('blog_post', slug=post.slug, _external=True) }}&text={{ post.title }}"
-                           class="btn btn-outline-primary"
-                           target="_blank">
-                            <i class="fab fa-twitter"></i> Tweet
-                        </a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u={{ url_for('blog_post', slug=post.slug, _external=True) }}"
-                           class="btn btn-outline-primary"
-                           target="_blank">
-                            <i class="fab fa-facebook"></i> Share
-                        </a>
-                        <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ url_for('blog_post', slug=post.slug, _external=True) }}&title={{ post.title }}"
-                           class="btn btn-outline-primary"
-                           target="_blank">
-                            <i class="fab fa-linkedin"></i> Share
-                        </a>
-                    </div>
-                </div>
-            </article>
-        </div>
-    </div>
-</div>
 {% endblock %}
