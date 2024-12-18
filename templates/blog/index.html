@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Insurance Tips & Resources - Prime Insurance Services{% endblock %}
+
+{% block meta_description %}Expert insurance tips, guides, and educational resources to help you make informed decisions about your insurance coverage.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Insurance Tips & Resources</h1>
+            
+            {% if current_user.is_authenticated %}
+            <div class="mb-4">
+                <a href="{{ url_for('create_blog_post') }}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Create New Post
+                </a>
+            </div>
+            {% endif %}
+
+            {% for post in posts.items %}
+            <article class="card mb-4">
+                {% if post.featured_image %}
+                <img src="{{ post.featured_image }}" class="card-img-top" alt="{{ post.title }}">
+                {% endif %}
+                <div class="card-body">
+                    <h2 class="card-title h4">
+                        <a href="{{ url_for('blog_post', slug=post.slug) }}" class="text-decoration-none text-dark">
+                            {{ post.title }}
+                        </a>
+                    </h2>
+                    <p class="card-text text-muted">
+                        <small>
+                            <i class="fas fa-user"></i> {{ post.author.username }} |
+                            <i class="fas fa-calendar"></i> {{ post.created_at.strftime('%B %d, %Y') }} |
+                            <i class="fas fa-folder"></i> {{ post.category }}
+                        </small>
+                    </p>
+                    {% if post.summary %}
+                        <p class="card-text">{{ post.summary }}</p>
+                    {% else %}
+                        <p class="card-text">{{ post.content[:200] }}...</p>
+                    {% endif %}
+                    <a href="{{ url_for('blog_post', slug=post.slug) }}" class="btn btn-outline-primary">
+                        Read More
+                    </a>
+                </div>
+            </article>
+            {% endfor %}
+
+            <!-- Pagination -->
+            {% if posts.pages > 1 %}
+            <nav aria-label="Blog pagination">
+                <ul class="pagination justify-content-center">
+                    {% if posts.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('blog', page=posts.prev_num) }}">Previous</a>
+                    </li>
+                    {% endif %}
+
+                    {% for page_num in posts.iter_pages(left_edge=2, left_current=2, right_current=3, right_edge=2) %}
+                        {% if page_num %}
+                            <li class="page-item {% if page_num == posts.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('blog', page=page_num) }}">{{ page_num }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if posts.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('blog', page=posts.next_num) }}">Next</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Categories</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('blog', category='auto') }}" class="text-decoration-none">Auto Insurance</a></li>
+                        <li><a href="{{ url_for('blog', category='home') }}" class="text-decoration-none">Home Insurance</a></li>
+                        <li><a href="{{ url_for('blog', category='life') }}" class="text-decoration-none">Life Insurance</a></li>
+                        <li><a href="{{ url_for('blog', category='business') }}" class="text-decoration-none">Business Insurance</a></li>
+                        <li><a href="{{ url_for('blog', category='general') }}" class="text-decoration-none">General Tips</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

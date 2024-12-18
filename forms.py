@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SelectField, EmailField, PasswordField, SubmitField, SubmitField
+from wtforms import StringField, TextAreaField, SelectField, EmailField, PasswordField, SubmitField, BooleanField
 from wtforms.validators import DataRequired, Email, Length, EqualTo, ValidationError
 from models import User
 
@@ -99,3 +99,23 @@ class EditProfileForm(FlaskForm):
             user = User.query.filter_by(email=email.data).first()
             if user is not None:
                 raise ValidationError('Please use a different email address.')
+
+
+class BlogPostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired(), Length(max=200)])
+    content = TextAreaField('Content', validators=[DataRequired()])
+    summary = TextAreaField('Summary', validators=[Length(max=300)])
+    category = SelectField('Category', 
+        choices=[
+            ('auto', 'Auto Insurance'),
+            ('home', 'Home Insurance'),
+            ('life', 'Life Insurance'),
+            ('business', 'Business Insurance'),
+            ('general', 'General Insurance Tips')
+        ],
+        validators=[DataRequired()])
+    featured_image = StringField('Featured Image URL', validators=[Length(max=200)])
+    meta_description = TextAreaField('Meta Description', validators=[Length(max=160)])
+    meta_keywords = StringField('Meta Keywords', validators=[Length(max=200)])
+    published = BooleanField('Publish')
+    submit = SubmitField('Save Post')

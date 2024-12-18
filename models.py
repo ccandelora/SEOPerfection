@@ -62,3 +62,19 @@ class ChatMessage(db.Model):
     status = db.Column(db.String(20), default='unread')
 
     user = db.relationship('User', backref=db.backref('chat_messages', lazy='dynamic'))
+
+class BlogPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(200), nullable=False)
+    slug = db.Column(db.String(200), unique=True, nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    summary = db.Column(db.String(300))
+    category = db.Column(db.String(50))
+    featured_image = db.Column(db.String(200))
+    meta_description = db.Column(db.String(160))
+    meta_keywords = db.Column(db.String(200))
+    published = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    author_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    author = db.relationship('User', backref=db.backref('blog_posts', lazy='dynamic'))

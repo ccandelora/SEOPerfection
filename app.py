@@ -290,6 +290,75 @@ def chat_history():
         'is_user': msg.is_user_message
     } for msg in messages])
 
+
+# Blog routes
+@app.route('/blog')
+def blog():
+    page = request.args.get('page', 1, type=int)
+    posts = BlogPost.query.filter_by(published=True).order_by(
+        BlogPost.created_at.desc()
+    ).paginate(page=page, per_page=10, error_out=False)
+    return render_template('blog/index.html', posts=posts)
+
+@app.route('/blog/<string:slug>')
+def blog_post(slug):
+    post = BlogPost.query.filter_by(slug=slug, published=True).first_or_404()
+    return render_template('blog/post.html', post=post)
+
+@app.route('/blog/create', methods=['GET', 'POST'])
+@login_required
+def create_blog_post():
+    if not current_user.is_authenticated:
+        flash('You must be logged in to create a blog post.', 'error')
+        return redirect(url_for('login'))
+    
+    form = BlogPostForm()
+    if form.validate_on_submit():
+        slug = form.title.data.lower().replace(' ', '-')
+        post = BlogPost(
+            title=form.title.data,
+            slug=slug,
+            content=form.content.data,
+            summary=form.summary.data,
+            category=form.category.data,
+            featured_image=form.featured_image.data,
+            meta_description=form.meta_description.data,
+            meta_keywords=form.meta_keywords.data,
+            published=form.published.data,
+            author=current_user
+        )
+        db.session.add(post)
+        db.session.commit()
+        flash('Blog post created successfully!', 'success')
+        return redirect(url_for('blog_post', slug=post.slug))
+    
+    return render_template('blog/create.html', form=form)
+
+@app.route('/blog/<string:slug>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_blog_post(slug):
+    post = BlogPost.query.filter_by(slug=slug).first_or_404()
+    
+    if post.author != current_user:
+        flash('You do not have permission to edit this post.', 'error')
+        return redirect(url_for('blog'))
+    
+    form = BlogPostForm(obj=post)
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        post.summary = form.summary.data
+        post.category = form.category.data
+        post.featured_image = form.featured_image.data
+        post.meta_description = form.meta_description.data
+        post.meta_keywords = form.meta_keywords.data
+        post.published = form.published.data
+        db.session.commit()
+        flash('Blog post updated successfully!', 'success')
+        return redirect(url_for('blog_post', slug=post.slug))
+    
+    return render_template('blog/edit.html', form=form, post=post)
+
 with app.app_context():
     import models
     db.create_all()

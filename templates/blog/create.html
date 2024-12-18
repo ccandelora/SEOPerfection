@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Create Blog Post - Prime Insurance Services{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <h1 class="mb-4">Create Blog Post</h1>
+            
+            <form method="POST" class="needs-validation" novalidate>
+                {{ form.csrf_token }}
+                
+                <div class="mb-3">
+                    {{ form.title.label(class="form-label") }}
+                    {{ form.title(class="form-control") }}
+                    {% if form.title.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.title.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.category.label(class="form-label") }}
+                    {{ form.category(class="form-select") }}
+                    {% if form.category.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.category.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.summary.label(class="form-label") }}
+                    {{ form.summary(class="form-control", rows="3") }}
+                    {% if form.summary.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.summary.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.content.label(class="form-label") }}
+                    {{ form.content(class="form-control", rows="10") }}
+                    {% if form.content.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.content.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.featured_image.label(class="form-label") }}
+                    {{ form.featured_image(class="form-control") }}
+                    {% if form.featured_image.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.featured_image.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.meta_description.label(class="form-label") }}
+                    {{ form.meta_description(class="form-control", rows="2") }}
+                    {% if form.meta_description.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.meta_description.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.meta_keywords.label(class="form-label") }}
+                    {{ form.meta_keywords(class="form-control") }}
+                    {% if form.meta_keywords.errors %}
+                        <div class="invalid-feedback d-block">
+                            {% for error in form.meta_keywords.errors %}
+                                {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-3 form-check">
+                    {{ form.published(class="form-check-input") }}
+                    {{ form.published.label(class="form-check-label") }}
+                </div>
+
+                <div class="d-grid gap-2">
+                    {{ form.submit(class="btn btn-primary btn-lg") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
