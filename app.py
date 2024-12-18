@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import logging
-from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm
+from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm, EditProfileForm
 from urllib.parse import urlparse
 
 # Set up logging
