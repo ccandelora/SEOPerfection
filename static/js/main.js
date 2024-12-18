@@ -121,10 +121,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 // Chat Widget functionality
-let socket = io();
-let chatWidget = document.getElementById('chatWidget');
-let chatMessages = document.getElementById('chatMessages');
-let messageInput = document.getElementById('messageInput');
+let socket;
+let chatWidget;
+let chatMessages;
+let messageInput;
+
+// Initialize chat elements after DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    socket = io();
+    chatWidget = document.getElementById('chatWidget');
+    chatMessages = document.getElementById('chatMessages');
+    messageInput = document.getElementById('messageInput');
+    
+    if (document.querySelector('.nav-link.text-light[href="/profile"]')) {
+        loadChatHistory();
+    }
+});
 
 // Socket connection handling
 socket.on('connect', () => {
