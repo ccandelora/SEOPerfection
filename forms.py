@@ -50,6 +50,38 @@ class QuoteForm(FlaskForm):
         validators=[DataRequired()])
     details = TextAreaField('Additional Details', validators=[Length(max=1000)])
 
+class AutoInsuranceCalculatorForm(FlaskForm):
+    vehicle_year = SelectField('Vehicle Year', 
+        choices=[(str(year), str(year)) for year in range(2024, 1990, -1)],
+        validators=[DataRequired()])
+    vehicle_make = StringField('Vehicle Make', validators=[DataRequired(), Length(max=50)])
+    vehicle_model = StringField('Vehicle Model', validators=[DataRequired(), Length(max=50)])
+    driver_age = SelectField('Driver Age',
+        choices=[(str(age), str(age)) for age in range(16, 91)],
+        validators=[DataRequired()])
+    driving_history = SelectField('Driving History',
+        choices=[
+            ('clean', 'Clean Record'),
+            ('minor', 'Minor Violations'),
+            ('major', 'Major Violations')
+        ],
+        validators=[DataRequired()])
+    coverage_type = SelectField('Coverage Type',
+        choices=[
+            ('liability', 'Liability Only'),
+            ('collision', 'Collision'),
+            ('comprehensive', 'Comprehensive')
+        ],
+        validators=[DataRequired()])
+    deductible = SelectField('Deductible Amount',
+        choices=[
+            ('500', '$500'),
+            ('1000', '$1,000'),
+            ('2500', '$2,500')
+        ],
+        validators=[DataRequired()])
+    submit = SubmitField('Calculate Premium')
+
 class EditProfileForm(FlaskForm):
     first_name = StringField('First Name', validators=[DataRequired(), Length(max=64)])
     last_name = StringField('Last Name', validators=[DataRequired(), Length(max=64)])

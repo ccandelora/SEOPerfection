@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for, jso
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import logging
 from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm, EditProfileForm
+from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm, EditProfileForm, AutoInsuranceCalculatorForm
 from urllib.parse import urlparse
 from flask_socketio import SocketIO, emit
 from datetime import datetime
@@ -159,6 +160,64 @@ def umbrella_insurance():
 @app.route('/services/business')
 def business_insurance():
     return render_template('services/business.html')
+
+@app.route('/calculators/auto', methods=['GET', 'POST'])
+def auto_insurance_calculator():
+    form = AutoInsuranceCalculatorForm()
+    estimated_premium = None
+    
+    if form.validate_on_submit():
+        # Basic premium calculation logic
+        base_premium = 100  # Base monthly premium
+        
+        # Vehicle age factor
+        vehicle_age = 2024 - int(form.vehicle_year.data)
+        age_factor = 1 + (vehicle_age * 0.02)  # 2% increase per year of age
+        
+        # Driver age factor
+        driver_age = int(form.driver_age.data)
+        if driver_age < 25:
+            driver_factor = 1.5
+        elif driver_age > 65:
+            driver_factor = 1.3
+        else:
+            driver_factor = 1.0
+            
+        # Driving history factor
+        history_factors = {
+            'clean': 1.0,
+            'minor': 1.25,
+            'major': 1.8
+        }
+        history_factor = history_factors[form.driving_history.data]
+        
+        # Coverage factor
+        coverage_factors = {
+            'liability': 1.0,
+            'collision': 1.4,
+            'comprehensive': 1.8
+        }
+        coverage_factor = coverage_factors[form.coverage_type.data]
+        
+        # Deductible factor
+        deductible_factors = {
+            '500': 1.2,
+            '1000': 1.0,
+            '2500': 0.8
+        }
+        deductible_factor = deductible_factors[form.deductible.data]
+        
+        # Calculate final premium
+        estimated_premium = (base_premium * age_factor * driver_factor * 
+                           history_factor * coverage_factor * deductible_factor)
+        
+        # Round to 2 decimal places
+        estimated_premium = round(estimated_premium, 2)
+        
+        flash('Premium calculated successfully!', 'success')
+    
+    return render_template('calculators/auto.html', form=form, estimated_premium=estimated_premium)
+
 
 # Error handlers
 @app.errorhandler(404)

@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Auto Insurance Calculator - Prime Insurance Services{% endblock %}
+
+{% block meta_description %}Calculate your estimated auto insurance premium with our easy-to-use calculator. Get instant estimates based on your vehicle and driving history.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">Auto Insurance Calculator</h1>
+                    <p class="lead text-center mb-4">Get an instant estimate for your auto insurance premium</p>
+                    
+                    <form method="POST" class="needs-validation" novalidate>
+                        {{ form.csrf_token }}
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                {{ form.vehicle_year.label(class="form-label") }}
+                                {{ form.vehicle_year(class="form-select") }}
+                                {% if form.vehicle_year.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.vehicle_year.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.vehicle_make.label(class="form-label") }}
+                                {{ form.vehicle_make(class="form-control", placeholder="e.g. Toyota") }}
+                                {% if form.vehicle_make.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.vehicle_make.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                {{ form.vehicle_model.label(class="form-label") }}
+                                {{ form.vehicle_model(class="form-control", placeholder="e.g. Camry") }}
+                                {% if form.vehicle_model.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.vehicle_model.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.driver_age.label(class="form-label") }}
+                                {{ form.driver_age(class="form-select") }}
+                                {% if form.driver_age.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.driver_age.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.driving_history.label(class="form-label") }}
+                                {{ form.driving_history(class="form-select") }}
+                                {% if form.driving_history.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.driving_history.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                {{ form.coverage_type.label(class="form-label") }}
+                                {{ form.coverage_type(class="form-select") }}
+                                {% if form.coverage_type.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.coverage_type.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                {{ form.deductible.label(class="form-label") }}
+                                {{ form.deductible(class="form-select") }}
+                                {% if form.deductible.errors %}
+                                    <div class="invalid-feedback d-block">
+                                        {% for error in form.deductible.errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            {{ form.submit(class="btn btn-primary btn-lg") }}
+                        </div>
+                    </form>
+
+                    {% if estimated_premium %}
+                    <div class="mt-4">
+                        <div class="alert alert-success">
+                            <h4 class="alert-heading">Estimated Premium</h4>
+                            <p class="display-4 mb-0">${{ "%.2f"|format(estimated_premium) }}/month</p>
+                            <hr>
+                            <p class="mb-0">This is an estimate based on the information provided. Contact us for a detailed quote.</p>
+                            <div class="mt-3">
+                                <a href="{{ url_for('quote') }}" class="btn btn-outline-success">Get Official Quote</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="mt-4">
+                        <h3>How We Calculate Your Premium</h3>
+                        <p>Our calculator considers multiple factors to provide you with an estimated premium:</p>
+                        <ul>
+                            <li><strong>Vehicle Information:</strong> Year, make, and model affect your premium based on the car's value and safety features.</li>
+                            <li><strong>Driver Profile:</strong> Age and driving history are key factors in determining risk levels.</li>
+                            <li><strong>Coverage Options:</strong> The type of coverage and deductible amount directly impact your premium.</li>
+                        </ul>
+                        <p class="text-muted"><small>Note: This calculator provides estimates only. Your actual premium may vary based on additional factors and specific circumstances.</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
