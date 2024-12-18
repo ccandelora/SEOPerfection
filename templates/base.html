@@ -143,30 +143,32 @@
     
     <!-- Chat Widget -->
     <div class="chat-widget" id="chatWidget">
-        <div class="chat-header">
+        <div class="chat-header" onclick="toggleChat()">
             <h3>Live Support</h3>
-            <button class="chat-minimize" aria-label="Minimize chat" onclick="toggleChat()">
+            <button class="chat-minimize" aria-label="Toggle chat">
                 <i class="fas fa-minus"></i>
             </button>
         </div>
-        <div class="chat-messages" id="chatMessages">
-            <div class="welcome-message">
-                <p>Welcome to Prime Insurance Services! How can we help you today?</p>
-            </div>
-        </div>
-        <div class="chat-input">
-            <form id="chatForm" onsubmit="sendMessage(event)">
-                <div class="input-group">
-                    <input type="text" 
-                           id="messageInput" 
-                           class="form-control" 
-                           placeholder="Type your message..." 
-                           aria-label="Chat message">
-                    <button class="btn btn-primary" type="submit">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+        <div class="chat-content">
+            <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                    <p>Welcome to Prime Insurance Services! How can we help you today?</p>
                 </div>
-            </form>
+            </div>
+            <div class="chat-input">
+                <form id="chatForm" onsubmit="sendMessage(event)">
+                    <div class="input-group">
+                        <input type="text" 
+                               id="messageInput" 
+                               class="form-control" 
+                               placeholder="Type your message..." 
+                               aria-label="Chat message">
+                        <button class="btn btn-primary" type="submit">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -179,28 +181,29 @@
         bottom: 20px;
         right: 20px;
         width: 300px;
-        height: 400px;
         background: white;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        display: flex;
-        flex-direction: column;
         z-index: 1000;
+        overflow: hidden;
     }
 
     .chat-header {
-        padding: 10px;
+        padding: 10px 15px;
         background: var(--bs-primary);
         color: white;
         border-radius: 10px 10px 0 0;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        cursor: pointer;
+        user-select: none;
     }
 
     .chat-header h3 {
         margin: 0;
         font-size: 1rem;
+        font-weight: normal;
     }
 
     .chat-minimize {
@@ -208,6 +211,19 @@
         border: none;
         color: white;
         cursor: pointer;
+        padding: 0;
+        margin-left: 10px;
+    }
+
+    .chat-content {
+        height: 350px;
+        display: flex;
+        flex-direction: column;
+        transition: height 0.3s ease;
+    }
+
+    .chat-content.collapsed {
+        height: 0;
     }
 
     .chat-messages {
