@@ -4,28 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Prime Insurance Services{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}Prime Insurance Services offers comprehensive insurance solutions including auto, home, life, and business insurance with personalized service.{% endblock %}">
+    <meta name="description" content="{% block meta_description %}Prime Insurance Services offers personalized insurance solutions including auto, home, life, and business insurance.{% endblock %}">
     
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Custom CSS -->
-    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
     <!-- Schema.org markup -->
     <script type="application/ld+json">
     {
-        "@context": "http://schema.org",
+        "@context": "https://schema.org",
         "@type": "InsuranceAgency",
         "name": "Prime Insurance Services, Inc.",
-        "description": "Comprehensive insurance solutions with personalized service",
+        "image": "https://images.unsplash.com/photo-1511988617509-a57c8a288659",
         "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Your Street Address",
-            "addressLocality": "Your City",
-            "addressRegion": "Your State",
-            "postalCode": "Your Zip"
+            "streetAddress": "",
+            "addressLocality": "",
+            "addressRegion": "",
+            "postalCode": "",
+            "addressCountry": "US"
         },
         "telephone": "978-685-9999",
         "email": "Quotes@PrimeHomeAndAuto.com"
@@ -42,7 +43,6 @@
     </script>
 </head>
 <body>
-    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('index') }}">
@@ -52,25 +52,31 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                        <a class="nav-link" href="{{ url_for('about') }}">About Us</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('about') }}">About</a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Services
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('auto_insurance') }}">Auto Insurance</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('home_insurance') }}">Home Insurance</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('life_insurance') }}">Life Insurance</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('umbrella_insurance') }}">Umbrella Insurance</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('business_insurance') }}">Business Insurance</a></li>
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('contact') }}">Contact</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-outline-light" href="{{ url_for('contact') }}">Get Quote</a>
-                    </li>
                 </ul>
+                <a href="{{ url_for('quote') }}" class="btn btn-light">Get a Quote</a>
             </div>
         </div>
     </nav>
 
-    <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
             {% for category, message in messages %}
@@ -82,10 +88,8 @@
         {% endif %}
     {% endwith %}
 
-    <!-- Main Content -->
     {% block content %}{% endblock %}
 
-    <!-- Footer -->
     <footer class="bg-dark text-light py-4 mt-5">
         <div class="container">
             <div class="row">
@@ -101,7 +105,7 @@
                     <ul class="list-unstyled">
                         <li><a href="{{ url_for('about') }}" class="text-light">About Us</a></li>
                         <li><a href="{{ url_for('contact') }}" class="text-light">Contact</a></li>
-                        <li><a href="{{ url_for('contact') }}" class="text-light">Get a Quote</a></li>
+                        <li><a href="{{ url_for('quote') }}" class="text-light">Get a Quote</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">
@@ -121,9 +125,9 @@
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
+    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
+    <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

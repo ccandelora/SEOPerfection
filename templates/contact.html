@@ -2,69 +2,117 @@
 
 {% block title %}Contact Us - Prime Insurance Services{% endblock %}
 
-{% block meta_description %}Contact Prime Insurance Services for personalized insurance solutions. Get a free quote or speak with our experienced team today.{% endblock %}
+{% block meta_description %}Get in touch with Prime Insurance Services for personalized insurance solutions. Contact our team for quotes, questions, or assistance with your insurance needs.{% endblock %}
 
 {% block content %}
-<section class="py-5">
-    <div class="container">
-        <h1 class="text-center mb-4">Contact Us</h1>
-        
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">Get in Touch</h2>
-                        <form method="POST" action="{{ url_for('contact') }}">
-                            <div class="mb-3">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="message" class="form-label">Message</label>
-                                <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Send Message</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+<div class="container py-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h1 class="mb-4">Contact Us</h1>
+            <p class="lead mb-4">We're here to help with all your insurance needs.</p>
             
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">Contact Information</h2>
-                        <p><i class="fas fa-phone text-primary"></i> <strong>Phone:</strong> 978-685-9999</p>
-                        <p><i class="fas fa-envelope text-primary"></i> <strong>Email:</strong> Quotes@PrimeHomeAndAuto.com</p>
-                        <p><i class="fas fa-clock text-primary"></i> <strong>Office Hours:</strong></p>
-                        <ul class="list-unstyled ms-4">
-                            <li>Monday - Friday: 9:00 AM - 5:00 PM</li>
-                            <li>Saturday: By Appointment</li>
-                            <li>Sunday: Closed</li>
-                        </ul>
+            <!-- Contact Information -->
+            <div class="mb-4">
+                <h3>Get in Touch</h3>
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-phone fa-2x text-primary me-3"></i>
+                    <div>
+                        <h4 class="mb-1">Phone</h4>
+                        <a href="tel:9786859999" class="text-decoration-none">978-685-9999</a>
                     </div>
                 </div>
-
-                <div class="card">
-                    <div class="card-body">
-                        <h2 class="h4 mb-3">Location</h2>
-                        <div class="ratio ratio-16x9">
-                            <iframe 
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2948.8442938066287!2d-71.0892!3d42.3601!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDLCsDIxJzM2LjQiTiA3McKwMDUnMjEuMSJX!5e0!3m2!1sen!2sus!4v1635787600000!5m2!1sen!2sus" 
-                                width="100%" 
-                                height="300" 
-                                style="border:0;" 
-                                allowfullscreen="" 
-                                loading="lazy">
-                            </iframe>
-                        </div>
+                <div class="d-flex align-items-center mb-3">
+                    <i class="fas fa-envelope fa-2x text-primary me-3"></i>
+                    <div>
+                        <h4 class="mb-1">Email</h4>
+                        <a href="mailto:Quotes@PrimeHomeAndAuto.com" class="text-decoration-none">Quotes@PrimeHomeAndAuto.com</a>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-clock fa-2x text-primary me-3"></i>
+                    <div>
+                        <h4 class="mb-1">Business Hours</h4>
+                        <p class="mb-0">Monday - Friday: 9:00 AM - 5:00 PM<br>
+                        Saturday: By Appointment<br>
+                        Sunday: Closed</p>
                     </div>
                 </div>
             </div>
         </div>
+        
+        <div class="col-md-6">
+            <!-- Contact Form -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Send Us a Message</h3>
+                    <form method="POST" class="needs-validation" novalidate>
+                        {{ form.csrf_token }}
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control", placeholder="Your Name") }}
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control", placeholder="your@email.com") }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.phone.label(class="form-label") }}
+                            {{ form.phone(class="form-control", placeholder="Your Phone Number") }}
+                            {% if form.phone.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.phone.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.message.label(class="form-label") }}
+                            {{ form.message(class="form-control", rows="5", placeholder="How can we help you?") }}
+                            {% if form.message.errors %}
+                                <div class="invalid-feedback">
+                                    {% for error in form.message.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+
+    <!-- Map Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="mb-4">Visit Our Office</h3>
+            <div class="ratio ratio-16x9">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1000!2d-0.1276474!3d51.5073219!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM1DCsDMwJzI2LjQiTiAwwrAwNyczNy41Ilc!5e0!3m2!1sen!2sus!4v1620841512345!5m2!1sen!2sus"
+                    width="100%" 
+                    height="450" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

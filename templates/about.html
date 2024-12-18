@@ -2,87 +2,110 @@
 
 {% block title %}About Us - Prime Insurance Services{% endblock %}
 
-{% block meta_description %}Learn about Prime Insurance Services' history, mission, and commitment to providing exceptional insurance solutions with personalized service.{% endblock %}
+{% block meta_description %}Learn about Prime Insurance Services' history, mission, and commitment to providing personalized insurance solutions with honest advice and exceptional service.{% endblock %}
 
 {% block content %}
-<section class="py-5">
-    <div class="container">
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h1 class="display-4 mb-4">About Prime Insurance Services</h1>
+            <p class="lead">We're more than just an insurance agency - we're your trusted partner in protection.</p>
+            <p>Since our founding, Prime Insurance Services has been dedicated to providing personalized insurance solutions that protect what matters most to our clients. Our team of experienced professionals works tirelessly to understand your unique needs and deliver customized coverage options.</p>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1554774853-719586f82d77" 
+                 alt="Professional insurance agents at work" 
+                 class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <!-- Mission & Values -->
+    <section class="mb-5">
+        <h2 class="mb-4">Our Mission</h2>
         <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <h1 class="text-center mb-4">About Prime Insurance Services</h1>
-                
-                <img src="https://images.unsplash.com/photo-1555421689-d68471e189f2" 
-                     alt="Prime Insurance team" 
-                     class="img-fluid rounded mb-4">
-
-                <h2>Our Story</h2>
-                <p class="lead">
-                    Prime Insurance Services has been serving our community with dedicated insurance solutions for years. 
-                    We've built our reputation on providing personalized service and comprehensive coverage options that protect 
-                    what matters most to our clients.
-                </p>
-
-                <h2 class="mt-4">Our Mission</h2>
-                <p>
-                    To provide peace of mind through comprehensive insurance solutions while delivering exceptional, 
-                    personalized service to every client. We strive to be your trusted advisor in navigating the 
-                    complex world of insurance.
-                </p>
-
-                <h2 class="mt-4">Core Values</h2>
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h3 class="h5"><i class="fas fa-heart text-primary"></i> Integrity</h3>
-                                <p>We always put our clients' interests first and provide honest, transparent advice.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h3 class="h5"><i class="fas fa-star text-primary"></i> Excellence</h3>
-                                <p>We strive for excellence in every interaction and service we provide.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h3 class="h5"><i class="fas fa-users text-primary"></i> Community</h3>
-                                <p>We're committed to serving and supporting our local community.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="card mb-3">
-                            <div class="card-body">
-                                <h3 class="h5"><i class="fas fa-handshake text-primary"></i> Trust</h3>
-                                <p>Building long-lasting relationships based on trust and mutual respect.</p>
-                            </div>
-                        </div>
+            <div class="col-md-8">
+                <p>To provide honest, professional insurance guidance and develop long-term relationships with our clients by delivering exceptional service and customized insurance solutions that protect their assets and provide peace of mind.</p>
+            </div>
+        </div>
+        
+        <h3 class="mt-4 mb-3">Core Values</h3>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-heart fa-2x text-primary mb-3"></i>
+                        <h4>Integrity</h4>
+                        <p>We always put our clients' interests first and provide honest, transparent advice.</p>
                     </div>
                 </div>
-
-                <h2 class="mt-4">Our Commitment</h2>
-                <p>
-                    At Prime Insurance Services, we're committed to:
-                </p>
-                <ul>
-                    <li>Providing personalized attention to each client</li>
-                    <li>Offering comprehensive insurance solutions</li>
-                    <li>Maintaining clear communication throughout the process</li>
-                    <li>Continuously educating ourselves about industry changes</li>
-                    <li>Being there when you need us most</li>
-                </ul>
-
-                <div class="text-center mt-5">
-                    <h3>Ready to experience the Prime Insurance difference?</h3>
-                    <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg mt-3">Contact Us Today</a>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-star fa-2x text-primary mb-3"></i>
+                        <h4>Excellence</h4>
+                        <p>We strive for excellence in every interaction and service we provide.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                        <h4>Community</h4>
+                        <p>We're committed to serving and supporting our local community.</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+
+    <!-- Team Section -->
+    <section class="mb-5">
+        <h2 class="mb-4">Our Expert Team</h2>
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-user-tie fa-3x text-primary me-3"></i>
+                            <div>
+                                <h4 class="mb-1">Insurance Professionals</h4>
+                                <p class="mb-0">With decades of combined experience</p>
+                            </div>
+                        </div>
+                        <p>Our team of licensed insurance professionals brings extensive knowledge and expertise to serve you better. We stay up-to-date with industry trends and regulations to provide you with the best guidance.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fas fa-headset fa-3x text-primary me-3"></i>
+                            <div>
+                                <h4 class="mb-1">Customer Service</h4>
+                                <p class="mb-0">Dedicated support team</p>
+                            </div>
+                        </div>
+                        <p>Our customer service team is committed to providing prompt, professional assistance whenever you need it. We're here to answer your questions and help with claims processing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="bg-light p-5 rounded">
+        <div class="text-center">
+            <h2 class="mb-4">Ready to Get Started?</h2>
+            <p class="lead mb-4">Let us help you find the perfect insurance coverage for your needs.</p>
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                <a href="{{ url_for('quote') }}" class="btn btn-primary btn-lg px-4 gap-3">Get a Quote</a>
+                <a href="{{ url_for('contact') }}" class="btn btn-outline-primary btn-lg px-4">Contact Us</a>
+            </div>
+        </div>
+    </section>
+</div>
 {% endblock %}

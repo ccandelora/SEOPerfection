@@ -1,11 +1,11 @@
 import os
-import logging
 from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-from flask_mail import Mail, Message
+import logging
+from forms import ContactForm, QuoteForm
 
-# Configure logging
+# Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
 class Base(DeclarativeBase):
@@ -15,46 +15,19 @@ db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 
 # Configuration
-app.secret_key = os.environ.get("FLASK_SECRET_KEY", "prime_insurance_secret_key")
+app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "prime-insurance-secret-key"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL", "sqlite:///prime_insurance.db")
 app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_recycle": 300,
     "pool_pre_ping": True,
 }
 
-# Mail configuration
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
-
 db.init_app(app)
-mail = Mail(app)
 
-# Service categories
-PERSONAL_INSURANCE = {
-    'auto': 'Auto Insurance',
-    'home': 'Home Insurance',
-    'umbrella': 'Umbrella Insurance',
-    'life': 'Life Insurance',
-    'bundling': 'Insurance Bundling'
-}
-
-BUSINESS_INSURANCE = {
-    'business': 'Business Owners Insurance',
-    'commercial-auto': 'Commercial Auto Insurance',
-    'workmen-comp': 'Workmen's Comp Insurance',
-    'non-profit': 'Non-Profit Insurance',
-    'tech': 'Tech Insurance',
-    'cyber': 'Cyber Security Insurance'
-}
-
+# Route handlers
 @app.route('/')
 def index():
-    return render_template('index.html', 
-                         personal_insurance=PERSONAL_INSURANCE,
-                         business_insurance=BUSINESS_INSURANCE)
+    return render_template('index.html')
 
 @app.route('/about')
 def about():
@@ -62,48 +35,48 @@ def about():
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
-    if request.method == 'POST':
-        name = request.form.get('name')
-        email = request.form.get('email')
-        message = request.form.get('message')
-        
-        try:
-            msg = Message('New Contact Form Submission',
-                         sender=email,
-                         recipients=['Quotes@PrimeHomeAndAuto.com'])
-            msg.body = f"Name: {name}\nEmail: {email}\nMessage: {message}"
-            mail.send(msg)
-            flash('Thank you for your message. We will get back to you soon!', 'success')
-        except Exception as e:
-            logging.error(f"Error sending email: {e}")
-            flash('Sorry, there was an error sending your message. Please try again later.', 'error')
-        
+    form = ContactForm()
+    if form.validate_on_submit():
+        flash('Thank you for your message. We will contact you shortly!', 'success')
         return redirect(url_for('contact'))
-    
-    return render_template('contact.html')
+    return render_template('contact.html', form=form)
 
-@app.route('/service/<category>/<service>')
-def service(category, service):
-    services = PERSONAL_INSURANCE if category == 'personal' else BUSINESS_INSURANCE
-    if service not in services:
+@app.route('/quote', methods=['GET', 'POST'])
+def quote():
+    form = QuoteForm()
+    if form.validate_on_submit():
+        flash('Thank you for requesting a quote. Our team will reach out soon!', 'success')
         return redirect(url_for('index'))
-    
-    return render_template('service.html', 
-                         service_name=services[service],
-                         service_type=service)
+    return render_template('quote.html', form=form)
 
-@app.route('/sitemap.xml')
-def sitemap():
-    return app.send_static_file('sitemap.xml')
+# Service routes
+@app.route('/services/auto')
+def auto_insurance():
+    return render_template('services/auto.html')
+
+@app.route('/services/home')
+def home_insurance():
+    return render_template('services/home.html')
+
+@app.route('/services/life')
+def life_insurance():
+    return render_template('services/life.html')
+
+@app.route('/services/umbrella')
+def umbrella_insurance():
+    return render_template('services/umbrella.html')
+
+@app.route('/services/business')
+def business_insurance():
+    return render_template('services/business.html')
 
 # Error handlers
 @app.errorhandler(404)
-def not_found_error(error):
+def page_not_found(e):
     return render_template('404.html'), 404
 
 @app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
+def internal_server_error(e):
     return render_template('500.html'), 500
 
 with app.app_context():

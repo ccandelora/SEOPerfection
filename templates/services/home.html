@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Home Insurance - Prime Insurance Services{% endblock %}
+
+{% block meta_description %}Protect your home with comprehensive insurance coverage from Prime Insurance Services. Get customized homeowners insurance policies to safeguard your property and belongings.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h1 class="display-4 mb-4">Home Insurance</h1>
+            <p class="lead">Protect your most valuable asset with comprehensive coverage.</p>
+            <a href="{{ url_for('quote') }}" class="btn btn-primary btn-lg">Get a Free Quote</a>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1722253583962-74dd5deea8c4" 
+                 alt="Beautiful home protected by insurance" 
+                 class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <!-- Coverage Types -->
+    <section class="mb-5">
+        <h2 class="mb-4">Coverage Types</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-home fa-2x text-primary mb-3"></i>
+                        <h3>Dwelling Coverage</h3>
+                        <p>Protects the structure of your home against damage from fire, storms, and other covered perils.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-couch fa-2x text-primary mb-3"></i>
+                        <h3>Personal Property</h3>
+                        <p>Covers your belongings, including furniture, clothing, and electronics.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-gavel fa-2x text-primary mb-3"></i>
+                        <h3>Liability Protection</h3>
+                        <p>Provides coverage if someone is injured on your property and sues for damages.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Protection -->
+    <section class="bg-light p-5 rounded mb-5">
+        <h2 class="mb-4">Additional Protection Options</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Flood Insurance
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Earthquake Coverage
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Valuable Items Coverage
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Identity Theft Protection
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Home Business Coverage
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Equipment Breakdown Coverage
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Claims Process -->
+    <section class="mb-5">
+        <h2 class="mb-4">Claims Process</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-phone-alt fa-3x text-primary mb-3"></i>
+                        <h3>1. Report</h3>
+                        <p>Contact us immediately to report your claim and get the process started.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-clipboard-list fa-3x text-primary mb-3"></i>
+                        <h3>2. Assess</h3>
+                        <p>An adjuster will evaluate the damage and review your coverage.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-check-circle fa-3x text-primary mb-3"></i>
+                        <h3>3. Resolve</h3>
+                        <p>We'll work quickly to process your claim and issue payment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="mb-5">
+        <h2 class="mb-4">Frequently Asked Questions</h2>
+        <div class="accordion" id="homeInsuranceFAQ">
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                        How much home insurance coverage do I need?
+                    </button>
+                </h3>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#homeInsuranceFAQ">
+                    <div class="accordion-body">
+                        Coverage needs vary based on your home's value, location, and personal assets. We'll help you determine the right amount of coverage for your specific situation.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                        What discounts are available?
+                    </button>
+                </h3>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#homeInsuranceFAQ">
+                    <div class="accordion-body">
+                        We offer various discounts, including multi-policy, security system, claim-free, and new home discounts. Contact us to learn about all available savings opportunities.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="text-center">
+        <h2 class="mb-4">Protect Your Home Today</h2>
+        <p class="lead mb-4">Get a customized home insurance quote and secure your property with confidence.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{{ url_for('quote') }}" class="btn btn-primary btn-lg px-4 gap-3">Get a Quote</a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline-primary btn-lg px-4">Contact Us</a>
+        </div>
+    </section>
+</div>
+{% endblock %}

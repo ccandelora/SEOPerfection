@@ -1,0 +1,168 @@
+{% extends "base.html" %}
+
+{% block title %}Business Insurance - Prime Insurance Services{% endblock %}
+
+{% block meta_description %}Comprehensive business insurance solutions from Prime Insurance Services. Protect your company with tailored coverage including liability, property, workers' compensation, and cyber security insurance.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <h1 class="display-4 mb-4">Business Insurance</h1>
+            <p class="lead">Comprehensive protection for your business operations.</p>
+            <a href="{{ url_for('quote') }}" class="btn btn-primary btn-lg">Get a Free Quote</a>
+        </div>
+        <div class="col-md-6">
+            <img src="https://images.unsplash.com/photo-1554774853-719586f82d77" 
+                 alt="Professional business environment" 
+                 class="img-fluid rounded shadow">
+        </div>
+    </div>
+
+    <!-- Coverage Types -->
+    <section class="mb-5">
+        <h2 class="mb-4">Business Coverage Options</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-building fa-2x text-primary mb-3"></i>
+                        <h3>Business Owners Policy</h3>
+                        <p>Combined coverage for property, liability, and business interruption.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-users fa-2x text-primary mb-3"></i>
+                        <h3>Workers' Compensation</h3>
+                        <p>Protection for your employees in case of work-related injuries.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <i class="fas fa-shield-virus fa-2x text-primary mb-3"></i>
+                        <h3>Cyber Security</h3>
+                        <p>Protection against data breaches and cyber threats.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industry Solutions -->
+    <section class="bg-light p-5 rounded mb-5">
+        <h2 class="mb-4">Industry-Specific Solutions</h2>
+        <div class="row">
+            <div class="col-md-3 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-store fa-2x text-primary me-3"></i>
+                    <span>Retail</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-utensils fa-2x text-primary me-3"></i>
+                    <span>Restaurants</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-laptop-code fa-2x text-primary me-3"></i>
+                    <span>Technology</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-hard-hat fa-2x text-primary me-3"></i>
+                    <span>Construction</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features -->
+    <section class="mb-5">
+        <h2 class="mb-4">Key Features</h2>
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Property Damage Coverage
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        General Liability Protection
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Business Interruption Coverage
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="list-unstyled">
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Professional Liability Coverage
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Employment Practices Liability
+                    </li>
+                    <li class="mb-3">
+                        <i class="fas fa-check text-primary me-2"></i>
+                        Data Breach Protection
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="mb-5">
+        <h2 class="mb-4">Frequently Asked Questions</h2>
+        <div class="accordion" id="businessInsuranceFAQ">
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">
+                        What type of business insurance do I need?
+                    </button>
+                </h3>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#businessInsuranceFAQ">
+                    <div class="accordion-body">
+                        Required coverage varies by industry, business size, and risk factors. Our experts will assess your needs and recommend appropriate coverage options.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h3 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">
+                        How can I reduce my business insurance costs?
+                    </button>
+                </h3>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#businessInsuranceFAQ">
+                    <div class="accordion-body">
+                        Implementing safety programs, improving security measures, and bundling policies can help reduce premiums while maintaining comprehensive coverage.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="text-center">
+        <h2 class="mb-4">Protect Your Business Today</h2>
+        <p class="lead mb-4">Get customized business insurance solutions tailored to your industry and needs.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{{ url_for('quote') }}" class="btn btn-primary btn-lg px-4 gap-3">Get a Quote</a>
+            <a href="{{ url_for('contact') }}" class="btn btn-outline-primary btn-lg px-4">Contact Us</a>
+        </div>
+    </section>
+</div>
+{% endblock %}
