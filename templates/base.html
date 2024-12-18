@@ -216,23 +216,50 @@
         flex-direction: column;
     }
 
+    @keyframes slideInRight {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideInLeft {
+        from {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
     .chat-message {
         margin: 8px 0;
         padding: 10px 15px;
         border-radius: 15px;
         max-width: 80%;
         clear: both;
+        animation-duration: 0.3s;
+        animation-fill-mode: both;
+        animation-timing-function: ease-out;
     }
 
     .user-message {
         background: var(--bs-primary);
         color: white;
         align-self: flex-end;
+        animation-name: slideInRight;
     }
 
     .support-message {
         background: #f1f1f1;
         align-self: flex-start;
+        animation-name: slideInLeft;
     }
 
     .chat-input {

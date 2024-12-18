@@ -183,12 +183,28 @@ function appendMessage(message, timestamp, isUser) {
     
     const messageDiv = document.createElement('div');
     messageDiv.className = `chat-message ${isUser ? 'user-message' : 'support-message'}`;
+    messageDiv.style.opacity = '0';  // Start invisible
     messageDiv.innerHTML = `
         <div class="message-content">${message}</div>
         <small class="message-time">${typeof timestamp === 'string' ? timestamp : getESTTime()} EST</small>
     `;
+    
     chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    
+    // Trigger reflow for animation
+    messageDiv.offsetHeight;
+    messageDiv.style.opacity = '1';
+    
+    // Smooth scroll to bottom
+    chatMessages.scrollTo({
+        top: chatMessages.scrollHeight,
+        behavior: 'smooth'
+    });
+    
+    // Add animation end listener
+    messageDiv.addEventListener('animationend', () => {
+        messageDiv.style.transform = 'none';  // Reset transform after animation
+    });
 }
 
 // Form submission handling
