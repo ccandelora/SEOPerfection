@@ -128,32 +128,49 @@ let messageInput;
 
 // Initialize chat elements after DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    socket = io();
-    chatWidget = document.getElementById('chatWidget');
-    chatMessages = document.getElementById('chatMessages');
-    messageInput = document.getElementById('messageInput');
-    
-    // Socket connection handling
-    socket.on('connect', () => {
-        console.log('Connected to chat server');
-    });
+    try {
+        socket = io();
+        chatWidget = document.getElementById('chatWidget');
+        chatMessages = document.getElementById('chatMessages');
+        messageInput = document.getElementById('messageInput');
+        
+        // Socket connection handling
+        socket.on('connect', () => {
+            console.log('Connected to chat server');
+            appendMessage('Connected to chat support.', new Date().toLocaleTimeString(), false);
+        });
 
-    socket.on('response', (data) => {
-        console.log('Server response:', data);
-    });
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+            appendMessage('Connection error. Please try again later.', new Date().toLocaleTimeString(), false);
+        });
 
-    socket.on('new_message', (data) => {
-        console.log('Received message:', data);
-        appendMessage(data.message, data.timestamp, data.is_user);
-    });
-    
-    if (document.querySelector('.nav-link.text-light[href="/profile"]')) {
-        loadChatHistory();
+        socket.on('response', (data) => {
+            console.log('Server response:', data);
+        });
+
+        socket.on('new_message', (data) => {
+            console.log('Received message:', data);
+            appendMessage(data.message, data.timestamp, data.is_user);
+        });
+        
+        // Load chat history for logged-in users
+        const profileLink = document.querySelector('.nav-link.text-light[href="/profile"]');
+        if (profileLink) {
+            loadChatHistory();
+        }
+    } catch (error) {
+        console.error('Error initializing chat:', error);
     }
 });
 
 // Chat message handling
 function appendMessage(message, timestamp, isUser) {
+    if (!chatMessages) {
+        console.error('Chat messages container not found');
+        return;
+    }
+    
     const messageDiv = document.createElement('div');
     messageDiv.className = `chat-message ${isUser ? 'user-message' : 'support-message'}`;
     messageDiv.innerHTML = `
@@ -169,7 +186,10 @@ function sendMessage(event) {
     event.preventDefault();
     const message = messageInput.value.trim();
     
-    if (message) {
+    if (message && socket) {
+        // Immediately show the user's message
+        appendMessage(message, new Date().toLocaleTimeString(), true);
+        
         socket.emit('send_message', {
             message: message,
             session_id: 'default'
@@ -182,13 +202,18 @@ function sendMessage(event) {
 function toggleChat() {
     const messagesDiv = document.getElementById('chatMessages');
     const inputDiv = document.querySelector('.chat-input');
+    const minimizeIcon = document.querySelector('.chat-minimize i');
     
-    if (messagesDiv.style.display === 'none') {
-        messagesDiv.style.display = 'flex';
-        inputDiv.style.display = 'block';
-    } else {
-        messagesDiv.style.display = 'none';
-        inputDiv.style.display = 'none';
+    if (messagesDiv && inputDiv) {
+        if (messagesDiv.style.display === 'none') {
+            messagesDiv.style.display = 'flex';
+            inputDiv.style.display = 'block';
+            minimizeIcon.className = 'fas fa-minus';
+        } else {
+            messagesDiv.style.display = 'none';
+            inputDiv.style.display = 'none';
+            minimizeIcon.className = 'fas fa-plus';
+        }
     }
 }
 
