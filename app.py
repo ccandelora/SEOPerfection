@@ -43,7 +43,9 @@ def load_user(id):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('onboarding'))
+        if not current_user.onboarding_completed:
+            return redirect(url_for('onboarding'))
+        return redirect(url_for('profile'))
     
     form = LoginForm()
     if form.validate_on_submit():
@@ -55,7 +57,10 @@ def login():
         login_user(user)
         next_page = request.args.get('next')
         if not next_page or urlparse(next_page).netloc != '':
-            next_page = url_for('profile')
+            if not user.onboarding_completed:
+                next_page = url_for('onboarding')
+            else:
+                next_page = url_for('profile')
         return redirect(next_page)
     
     return render_template('auth/login.html', title='Sign In', form=form)
@@ -63,6 +68,8 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
+        if not current_user.onboarding_completed:
+            return redirect(url_for('onboarding'))
         return redirect(url_for('profile'))
     
     form = RegistrationForm()
@@ -73,13 +80,16 @@ def register():
             first_name=form.first_name.data,
             last_name=form.last_name.data,
             phone=form.phone.data,
-            address=form.address.data
+            address=form.address.data,
+            onboarding_completed=False,
+            onboarding_step=0
         )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
         flash('Congratulations, you are now registered!', 'success')
-        return redirect(url_for('login'))
+        login_user(user)
+        return redirect(url_for('onboarding'))
     
     return render_template('auth/register.html', title='Register', form=form)
 
