@@ -120,3 +120,80 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// Chat Widget functionality
+let socket = io();
+let chatWidget = document.getElementById('chatWidget');
+let chatMessages = document.getElementById('chatMessages');
+let messageInput = document.getElementById('messageInput');
+
+// Socket connection handling
+socket.on('connect', () => {
+    console.log('Connected to chat server');
+});
+
+socket.on('response', (data) => {
+    console.log('Server response:', data);
+});
+
+socket.on('new_message', (data) => {
+    appendMessage(data.message, data.timestamp, data.is_user);
+});
+
+// Chat message handling
+function appendMessage(message, timestamp, isUser) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `chat-message ${isUser ? 'user-message' : 'support-message'}`;
+    messageDiv.innerHTML = `
+        <div class="message-content">${message}</div>
+        <small class="message-time">${timestamp}</small>
+    `;
+    chatMessages.appendChild(messageDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// Form submission handling
+function sendMessage(event) {
+    event.preventDefault();
+    const message = messageInput.value.trim();
+    
+    if (message) {
+        socket.emit('send_message', {
+            message: message,
+            session_id: 'default'
+        });
+        messageInput.value = '';
+    }
+}
+
+// Chat widget visibility toggle
+function toggleChat() {
+    const messagesDiv = document.getElementById('chatMessages');
+    const inputDiv = document.querySelector('.chat-input');
+    
+    if (messagesDiv.style.display === 'none') {
+        messagesDiv.style.display = 'flex';
+        inputDiv.style.display = 'block';
+    } else {
+        messagesDiv.style.display = 'none';
+        inputDiv.style.display = 'none';
+    }
+}
+
+// Load chat history when logged in
+function loadChatHistory() {
+    fetch('/chat/history')
+        .then(response => response.json())
+        .then(messages => {
+            messages.reverse().forEach(msg => {
+                appendMessage(msg.content, msg.timestamp, msg.is_user);
+            });
+        })
+        .catch(error => console.error('Error loading chat history:', error));
+}
+
+// Load chat history if user is logged in
+document.addEventListener('DOMContentLoaded', function() {
+    if (document.querySelector('.nav-link.text-light[href="/profile"]')) {
+        loadChatHistory();
+    }
+});

@@ -136,7 +136,122 @@
 
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chat Widget -->
+    <div class="chat-widget" id="chatWidget">
+        <div class="chat-header">
+            <h3>Live Support</h3>
+            <button class="chat-minimize" aria-label="Minimize chat" onclick="toggleChat()">
+                <i class="fas fa-minus"></i>
+            </button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="welcome-message">
+                <p>Welcome to Prime Insurance Services! How can we help you today?</p>
+            </div>
+        </div>
+        <div class="chat-input">
+            <form id="chatForm" onsubmit="sendMessage(event)">
+                <div class="input-group">
+                    <input type="text" 
+                           id="messageInput" 
+                           class="form-control" 
+                           placeholder="Type your message..." 
+                           aria-label="Chat message">
+                    <button class="btn btn-primary" type="submit">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Custom JavaScript -->
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+    <style>
+    .chat-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 300px;
+        height: 400px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        z-index: 1000;
+    }
+
+    .chat-header {
+        padding: 10px;
+        background: var(--bs-primary);
+        color: white;
+        border-radius: 10px 10px 0 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chat-header h3 {
+        margin: 0;
+        font-size: 1rem;
+    }
+
+    .chat-minimize {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    .chat-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-message {
+        margin: 5px 0;
+        padding: 8px 12px;
+        border-radius: 15px;
+        max-width: 80%;
+    }
+
+    .user-message {
+        background: var(--bs-primary);
+        color: white;
+        align-self: flex-end;
+    }
+
+    .support-message {
+        background: #f1f1f1;
+        align-self: flex-start;
+    }
+
+    .chat-input {
+        padding: 10px;
+        border-top: 1px solid #eee;
+    }
+
+    .welcome-message {
+        text-align: center;
+        padding: 10px;
+        color: #666;
+    }
+
+    @media (max-width: 576px) {
+        .chat-widget {
+            width: 100%;
+            height: 100%;
+            bottom: 0;
+            right: 0;
+            border-radius: 0;
+        }
+    }
+    </style>
 </body>
 </html>

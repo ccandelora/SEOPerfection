@@ -1,9 +1,11 @@
 import os
-from flask import Flask, render_template, request, flash, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import logging
 from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm, EditProfileForm
 from urllib.parse import urlparse
+from flask_socketio import SocketIO, emit
+from datetime import datetime
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
@@ -11,6 +13,7 @@ logging.basicConfig(level=logging.DEBUG)
 from database import db
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Configuration
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "prime-insurance-secret-key"
@@ -166,6 +169,63 @@ def page_not_found(e):
 def internal_server_error(e):
     return render_template('500.html'), 500
 
+@socketio.on('connect')
+def handle_connect():
+    emit('response', {'data': 'Connected to chat server'})
+
+@socketio.on('send_message')
+def handle_message(data):
+    if current_user.is_authenticated:
+        message = models.ChatMessage(
+            user_id=current_user.id,
+            content=data['message'],
+            chat_session=data.get('session_id', 'default'),
+            is_user_message=True
+        )
+        db.session.add(message)
+        db.session.commit()
+        
+        # Emit the message to the client
+        emit('new_message', {
+            'message': message.content,
+            'timestamp': message.created_at.strftime('%H:%M'),
+            'is_user': True
+        }, broadcast=True)
+        
+        # Simulate support response after a brief delay
+        socketio.sleep(1)
+        support_message = "Thank you for your message. A support representative will be with you shortly."
+        support_chat = models.ChatMessage(
+            user_id=current_user.id,
+            content=support_message,
+            chat_session=data.get('session_id', 'default'),
+            is_user_message=False
+        )
+        db.session.add(support_chat)
+        db.session.commit()
+        
+        emit('new_message', {
+            'message': support_message,
+            'timestamp': datetime.utcnow().strftime('%H:%M'),
+            'is_user': False
+        }, broadcast=True)
+
+@app.route('/chat/history')
+@login_required
+def chat_history():
+    messages = models.ChatMessage.query.filter_by(
+        user_id=current_user.id
+    ).order_by(models.ChatMessage.created_at.desc()).limit(50).all()
+    
+    return jsonify([{
+        'content': msg.content,
+        'timestamp': msg.created_at.strftime('%H:%M'),
+        'is_user': msg.is_user_message
+    } for msg in messages])
+
 with app.app_context():
     import models
     db.create_all()
+
+if __name__ == '__main__':
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)

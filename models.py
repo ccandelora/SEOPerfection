@@ -51,3 +51,14 @@ class Quote(db.Model):
     insurance_type = db.Column(db.String(50), nullable=False)
     details = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+class ChatMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    content = db.Column(db.Text, nullable=False)
+    is_user_message = db.Column(db.Boolean, default=True)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    chat_session = db.Column(db.String(50), nullable=False)
+    status = db.Column(db.String(20), default='unread')
+
+    user = db.relationship('User', backref=db.backref('chat_messages', lazy='dynamic'))
