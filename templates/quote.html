@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Get a Quote - Prime Insurance Services{% endblock %}
+
+{% block meta_description %}Request a personalized insurance quote from Prime Insurance Services. Get competitive rates for auto, home, life, and business insurance coverage.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h1 class="card-title text-center mb-4">Request a Quote</h1>
+                    <form method="POST" action="{{ url_for('quote') }}" class="needs-validation" novalidate>
+                        {{ form.csrf_token }}
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control", placeholder="Your Name") }}
+                            {% if form.name.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.name.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control", placeholder="your@email.com") }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.email.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.phone.label(class="form-label") }}
+                            {{ form.phone(class="form-control", placeholder="Your Phone Number") }}
+                            {% if form.phone.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.phone.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.insurance_type.label(class="form-label") }}
+                            {{ form.insurance_type(class="form-select") }}
+                            {% if form.insurance_type.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.insurance_type.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            {{ form.details.label(class="form-label") }}
+                            {{ form.details(class="form-control", rows="5", placeholder="Please provide any additional details that will help us understand your insurance needs.") }}
+                            {% if form.details.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {% for error in form.details.errors %}
+                                        {{ error }}
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Request Quote</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
