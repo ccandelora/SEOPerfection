@@ -90,6 +90,27 @@ def profile():
     policies = current_user.policies.all()
     return render_template('auth/profile.html', title='My Profile', policies=policies)
 
+@app.route('/profile/edit', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form = EditProfileForm(original_email=current_user.email)
+    if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.phone = form.phone.data
+        current_user.address = form.address.data
+        current_user.email = form.email.data
+        db.session.commit()
+        flash('Your changes have been saved.', 'success')
+        return redirect(url_for('profile'))
+    elif request.method == 'GET':
+        form.first_name.data = current_user.first_name
+        form.last_name.data = current_user.last_name
+        form.phone.data = current_user.phone
+        form.address.data = current_user.address
+        form.email.data = current_user.email
+    return render_template('auth/edit_profile.html', title='Edit Profile', form=form)
+
 # Route handlers
 @app.route('/')
 def index():

@@ -49,3 +49,21 @@ class QuoteForm(FlaskForm):
         ],
         validators=[DataRequired()])
     details = TextAreaField('Additional Details', validators=[Length(max=1000)])
+
+class EditProfileForm(FlaskForm):
+    first_name = StringField('First Name', validators=[DataRequired(), Length(max=64)])
+    last_name = StringField('Last Name', validators=[DataRequired(), Length(max=64)])
+    phone = StringField('Phone', validators=[DataRequired(), Length(min=10, max=15)])
+    address = StringField('Address', validators=[DataRequired(), Length(max=256)])
+    email = EmailField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Save Changes')
+
+    def __init__(self, original_email=None, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.original_email = original_email
+
+    def validate_email(self, email):
+        if email.data != self.original_email:
+            user = User.query.filter_by(email=email.data).first()
+            if user is not None:
+                raise ValidationError('Please use a different email address.')
