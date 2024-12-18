@@ -1,0 +1,85 @@
+
+**Website Development Prompt for Prime Insurance Services, Inc.**
+
+**Objective:**
+Develop a professional, user-friendly website for Prime Insurance Services, Inc. that showcases their comprehensive insurance services and emphasizes personalized support.
+
+---
+
+### **Homepage**
+
+**Hero Section:**
+- Image of happy customers on a beach.
+- Headline: "Personal Insurance, Personable Service"
+- Subheadline: "Customized Solutions to Protect What Matters Most"
+- Prominent CTA button: "Get Your Free Quote"
+
+**About Us:**
+- Brief intro with a link to a detailed "About Us" page.
+
+**Services Overview:**
+- Highlight key services with icons and short descriptions:
+  - Auto Insurance
+  - Home Insurance
+  - Umbrella Insurance
+  - Life Insurance
+  - Bundling
+- Link each to dedicated pages.
+
+**Business Insurance Overview:**
+- Highlight business services with icons:
+  - Business Owners Insurance
+  - Commercial Auto Insurance
+  - Workmen's Comp Insurance
+  - Non-Profit Insurance
+  - Tech Insurance
+  - Cyber Security Insurance
+- Link each to dedicated pages.
+
+**Why Choose Us?**
+- List benefits: Customized Solutions, Honest Advice, Personable Service.
+- Include testimonials or reviews with customer names (if given permission).
+
+**Contact and Quote:**
+- Display email: [Quotes@PrimeHomeAndAuto.com](mailto:Quotes@PrimeHomeAndAuto.com)
+- Display phone number: 978-685-9999
+- CTA for contact: "Contact Us" or "Request a Quote"
+
+### **Additional Pages**
+
+**About Us:**
+- Description of team and company history.
+- Mission statement and core values.
+
+**Service Pages:**
+- **Auto Insurance:** Coverage options, benefits, FAQs.
+- **Home Insurance:** Coverage types, claims process, FAQs.
+- **Umbrella Insurance:** Explanation of benefits and purposes.
+- **Life Insurance:** Policy options, coverage details.
+- **Bundling:** Cost savings, policy combinations.
+- **Business Owners Insurance:** Comprehensive business protection.
+- **Commercial Auto Insurance:** Vehicle-specific coverage details.
+- **Workmen's Comp Insurance:** Employee coverage and benefits.
+- **Non-Profit Insurance:** Tailored coverage for organizations.
+- **Tech Insurance:** Coverage for tech-related businesses.
+- **Cyber Security Insurance:** Digital threat and data protection solutions.
+
+**Contact Page:**
+- Contact form for inquiries
+- Google Map with office location
+- Office hours
+
+### **Design and Functionality Requirements:**
+- Modern, responsive design for mobile and desktop views.
+- Consistent branding with blue color scheme and shield logo.
+- Accessible navigation with clear menu structure.
+- Fast-loading pages with optimized images.
+
+### **SEO and Analytics Integration:**
+- Use SEO best practices for all pages and content.
+- Install Google Analytics and set up Google Search Console.
+- Optimize meta tags and descriptions for key pages.
+
+---
+
+This prompt provides a clear roadmap for a developer or website building platform to follow, ensuring all essential components are included and the design aligns with Prime Insurance Services, Inc.'s branding and service offerings.
