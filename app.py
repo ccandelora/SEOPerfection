@@ -363,6 +363,32 @@ def edit_blog_post(slug):
     
     return render_template('blog/edit.html', form=form, post=post)
 
+@app.route('/admin/users')
+@login_required
+def manage_users():
+    if not current_user.is_editor():
+        flash('You must be an editor to access this page.', 'error')
+        return redirect(url_for('index'))
+    users = User.query.all()
+    return render_template('auth/manage_users.html', users=users)
+
+@app.route('/admin/users/<int:user_id>/promote', methods=['POST'])
+@login_required
+def promote_to_editor(user_id):
+    if not current_user.is_editor():
+        flash('You must be an editor to promote users.', 'error')
+        return redirect(url_for('index'))
+    
+    user = User.query.get_or_404(user_id)
+    if user.role == 'editor':
+        flash('User is already an editor.', 'info')
+    else:
+        user.role = 'editor'
+        db.session.commit()
+        flash(f'Successfully promoted {user.username} to editor.', 'success')
+    
+    return redirect(url_for('manage_users'))
+
 with app.app_context():
     import models
     db.create_all()

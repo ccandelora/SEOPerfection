@@ -80,6 +80,9 @@
                 <div class="d-flex align-items-center">
                     {% if current_user.is_authenticated %}
                         <a href="{{ url_for('profile') }}" class="nav-link text-light me-3">My Profile</a>
+                        {% if current_user.is_editor() %}
+                        <a href="{{ url_for('manage_users') }}" class="nav-link text-light me-3">Manage Users</a>
+                        {% endif %}
                         <a href="{{ url_for('logout') }}" class="nav-link text-light me-3">Logout</a>
                     {% else %}
                         <a href="{{ url_for('login') }}" class="nav-link text-light me-3">Login</a>
