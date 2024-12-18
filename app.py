@@ -308,9 +308,9 @@ def blog_post(slug):
 @app.route('/blog/create', methods=['GET', 'POST'])
 @login_required
 def create_blog_post():
-    if not current_user.is_authenticated:
-        flash('You must be logged in to create a blog post.', 'error')
-        return redirect(url_for('login'))
+    if not current_user.is_authenticated or not current_user.is_editor():
+        flash('You must be an editor to create blog posts.', 'error')
+        return redirect(url_for('blog'))
     
     form = BlogPostForm()
     if form.validate_on_submit():
@@ -337,6 +337,10 @@ def create_blog_post():
 @app.route('/blog/<string:slug>/edit', methods=['GET', 'POST'])
 @login_required
 def edit_blog_post(slug):
+    if not current_user.is_editor():
+        flash('You must be an editor to edit blog posts.', 'error')
+        return redirect(url_for('blog'))
+        
     post = BlogPost.query.filter_by(slug=slug).first_or_404()
     
     if post.author != current_user:

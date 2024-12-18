@@ -10,7 +10,7 @@
         <div class="col-lg-8">
             <h1 class="mb-4">Insurance Tips & Resources</h1>
             
-            {% if current_user.is_authenticated %}
+            {% if current_user.is_authenticated and current_user.is_editor() %}
             <div class="mb-4">
                 <a href="{{ url_for('create_blog_post') }}" class="btn btn-primary">
                     <i class="fas fa-plus"></i> Create New Post
