@@ -187,9 +187,6 @@ function sendMessage(event) {
     const message = messageInput.value.trim();
     
     if (message && socket) {
-        // Immediately show the user's message
-        appendMessage(message, new Date().toLocaleTimeString(), true);
-        
         socket.emit('send_message', {
             message: message,
             session_id: 'default'
