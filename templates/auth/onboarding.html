@@ -19,7 +19,7 @@
                             <h2 class="text-center mb-4">Welcome to Prime Insurance!</h2>
                             <p class="text-center">Let's get you started with your insurance journey.</p>
                             <div class="text-center mt-4">
-                                <button class="btn btn-primary next-step">Get Started</button>
+                                <button type="button" class="btn btn-primary next-step" onclick="nextStep(1)">Get Started</button>
                             </div>
                         </div>
 
@@ -36,8 +36,8 @@
                                     <input type="text" class="form-control" name="address" required>
                                 </div>
                                 <div class="text-center mt-4">
-                                    <button type="button" class="btn btn-secondary prev-step">Back</button>
-                                    <button type="submit" class="btn btn-primary next-step">Continue</button>
+                                    <button type="button" class="btn btn-secondary" onclick="prevStep()">Back</button>
+                                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">Continue</button>
                                 </div>
                             </form>
                         </div>
@@ -109,9 +109,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const steps = wizard.querySelectorAll('.onboarding-step');
     let currentStep = 1;
 
+    window.nextStep = function(step) {
+        if (currentStep === 2) {
+            // Validate and submit profile form
+            const profileForm = document.getElementById('profileForm');
+            const formData = new FormData(profileForm);
+            const data = Object.fromEntries(formData.entries());
+            
+            fetch('/onboarding/save-profile', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showStep(currentStep + 1);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+            showStep(currentStep + 1);
+        }
+    }
+
+    window.prevStep = function() {
+        if (currentStep > 1) {
+            showStep(currentStep - 1);
+        }
+    }
+
     function updateProgress() {
         const progress = ((currentStep - 1) / (steps.length - 1)) * 100;
         progressBar.style.width = `${progress}%`;
+        progressBar.setAttribute('aria-valuenow', progress);
     }
 
     function showStep(step) {
@@ -121,24 +154,28 @@ document.addEventListener('DOMContentLoaded', function() {
         updateProgress();
     }
 
-    // Next step buttons
-    wizard.querySelectorAll('.next-step').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (currentStep < steps.length) {
-                showStep(currentStep + 1);
-            }
-        });
-    });
+    // Initial setup
+    updateProgress();
 
-    // Previous step buttons
-    wizard.querySelectorAll('.prev-step').forEach(button => {
-        button.addEventListener('click', function() {
-            if (currentStep > 1) {
-                showStep(currentStep - 1);
-            }
+    // Complete onboarding button handler
+    const completeButton = wizard.querySelector('.complete-onboarding');
+    if (completeButton) {
+        completeButton.addEventListener('click', function() {
+            fetch('/onboarding/complete', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.href = '/profile';
+                }
+            })
+            .catch(error => console.error('Error:', error));
         });
-    });
+    }
 
     // Handle profile form submission
     const profileForm = document.getElementById('profileForm');
