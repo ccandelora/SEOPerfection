@@ -175,9 +175,9 @@ def handle_connect():
 
 @socketio.on('send_message')
 def handle_message(data):
-    if current_user.is_authenticated:
+    try:
         message = models.ChatMessage(
-            user_id=current_user.id,
+            user_id=current_user.id if current_user.is_authenticated else None,
             content=data['message'],
             chat_session=data.get('session_id', 'default'),
             is_user_message=True
@@ -185,7 +185,7 @@ def handle_message(data):
         db.session.add(message)
         db.session.commit()
         
-        # Emit the message to the client
+        # Emit the message back to all clients
         emit('new_message', {
             'message': message.content,
             'timestamp': message.created_at.strftime('%H:%M'),
@@ -196,7 +196,7 @@ def handle_message(data):
         socketio.sleep(1)
         support_message = "Thank you for your message. A support representative will be with you shortly."
         support_chat = models.ChatMessage(
-            user_id=current_user.id,
+            user_id=current_user.id if current_user.is_authenticated else None,
             content=support_message,
             chat_session=data.get('session_id', 'default'),
             is_user_message=False
@@ -204,11 +204,15 @@ def handle_message(data):
         db.session.add(support_chat)
         db.session.commit()
         
+        # Emit support response to all clients
         emit('new_message', {
             'message': support_message,
             'timestamp': datetime.utcnow().strftime('%H:%M'),
             'is_user': False
         }, broadcast=True)
+    except Exception as e:
+        print(f"Error handling message: {str(e)}")
+        db.session.rollback()
 
 @app.route('/chat/history')
 @login_required

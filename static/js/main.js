@@ -133,22 +133,23 @@ document.addEventListener('DOMContentLoaded', function() {
     chatMessages = document.getElementById('chatMessages');
     messageInput = document.getElementById('messageInput');
     
+    // Socket connection handling
+    socket.on('connect', () => {
+        console.log('Connected to chat server');
+    });
+
+    socket.on('response', (data) => {
+        console.log('Server response:', data);
+    });
+
+    socket.on('new_message', (data) => {
+        console.log('Received message:', data);
+        appendMessage(data.message, data.timestamp, data.is_user);
+    });
+    
     if (document.querySelector('.nav-link.text-light[href="/profile"]')) {
         loadChatHistory();
     }
-});
-
-// Socket connection handling
-socket.on('connect', () => {
-    console.log('Connected to chat server');
-});
-
-socket.on('response', (data) => {
-    console.log('Server response:', data);
-});
-
-socket.on('new_message', (data) => {
-    appendMessage(data.message, data.timestamp, data.is_user);
 });
 
 // Chat message handling
