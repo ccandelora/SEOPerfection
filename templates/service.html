@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}{{ service_name }} - Prime Insurance Services{% endblock %}
+
+{% block meta_description %}Learn about our {{ service_name }} coverage options and benefits. Get personalized insurance solutions from Prime Insurance Services.{% endblock %}
+
+{% block content %}
+<!-- Service Header -->
+<section class="service-header">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ service_name }}</li>
+            </ol>
+        </nav>
+        <h1 class="display-4">{{ service_name }}</h1>
+    </div>
+</section>
+
+<!-- Service Content -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                {% if service_type == 'auto' %}
+                    <img src="https://images.unsplash.com/photo-1567113463730-77e3df20363c" 
+                         alt="Auto insurance coverage" 
+                         class="img-fluid rounded mb-4">
+                    <h2>Comprehensive Auto Coverage</h2>
+                    <p class="lead">Protect yourself and your vehicle with our comprehensive auto insurance solutions.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Liability Coverage</li>
+                        <li><i class="fas fa-check"></i> Collision Coverage</li>
+                        <li><i class="fas fa-check"></i> Comprehensive Coverage</li>
+                        <li><i class="fas fa-check"></i> Personal Injury Protection</li>
+                        <li><i class="fas fa-check"></i> Uninsured Motorist Coverage</li>
+                    </ul>
+
+                {% elif service_type == 'home' %}
+                    <img src="https://images.unsplash.com/photo-1722253583962-74dd5deea8c4" 
+                         alt="Home insurance coverage" 
+                         class="img-fluid rounded mb-4">
+                    <h2>Protect Your Home</h2>
+                    <p class="lead">Comprehensive coverage for your most valuable asset.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Dwelling Coverage</li>
+                        <li><i class="fas fa-check"></i> Personal Property Protection</li>
+                        <li><i class="fas fa-check"></i> Liability Coverage</li>
+                        <li><i class="fas fa-check"></i> Additional Living Expenses</li>
+                        <li><i class="fas fa-check"></i> Natural Disaster Protection</li>
+                    </ul>
+
+                {% else %}
+                    <h2>Customized Insurance Solutions</h2>
+                    <p class="lead">We offer tailored insurance coverage to meet your specific needs.</p>
+                    <ul class="feature-list">
+                        <li><i class="fas fa-check"></i> Comprehensive Coverage Options</li>
+                        <li><i class="fas fa-check"></i> Flexible Payment Plans</li>
+                        <li><i class="fas fa-check"></i> Expert Guidance</li>
+                        <li><i class="fas fa-check"></i> Fast Claims Processing</li>
+                        <li><i class="fas fa-check"></i> 24/7 Support</li>
+                    </ul>
+                {% endif %}
+
+                <div class="mt-4">
+                    <h3>Why Choose Our {{ service_name }}?</h3>
+                    <p>At Prime Insurance Services, we understand that every client has unique needs. Our experienced team works with you to create a customized insurance solution that provides the right coverage at the right price.</p>
+                </div>
+
+                <div class="mt-4">
+                    <h3>Frequently Asked Questions</h3>
+                    <div class="accordion" id="faqAccordion">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                    What does this insurance cover?
+                                </button>
+                            </h2>
+                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Our {{ service_name }} provides comprehensive coverage tailored to your specific needs. Contact us for detailed coverage information.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                    How do I file a claim?
+                                </button>
+                            </h2>
+                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    Filing a claim is easy. Simply contact our claims department at 978-685-9999, and we'll guide you through the process.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card sticky-top" style="top: 2rem;">
+                    <div class="card-body">
+                        <h3>Get a Free Quote</h3>
+                        <form id="quoteForm" class="needs-validation" novalidate>
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone</label>
+                                <input type="tel" class="form-control" id="phone" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary w-100">Request Quote</button>
+                        </form>
+                        <hr>
+                        <div class="text-center">
+                            <p class="mb-2">Or call us directly:</p>
+                            <a href="tel:9786859999" class="btn btn-outline-primary">
+                                <i class="fas fa-phone"></i> 978-685-9999
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
