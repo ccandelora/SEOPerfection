@@ -13,7 +13,7 @@
                     <p><strong>Email:</strong> {{ current_user.email }}</p>
                     <p><strong>Phone:</strong> {{ current_user.phone }}</p>
                     <p><strong>Address:</strong> {{ current_user.address }}</p>
-                    <a href="#" class="btn btn-outline-primary">Edit Profile</a>
+                    <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary">Edit Profile</a>
                 </div>
             </div>
         </div>
