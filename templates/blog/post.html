@@ -42,8 +42,140 @@
                     {{ post.content | safe }}
                 </div>
 
+                <!-- Comments Section -->
+                <div class="comments-section mt-5">
+                    <h3>Comments</h3>
+                    {% if current_user.is_authenticated %}
+                        <form method="POST" action="{{ url_for('add_comment', slug=post.slug) }}" class="mb-4">
+                            {{ comment_form.csrf_token }}
+                            <div class="mb-3">
+                                {{ comment_form.content(class="form-control", rows="3", placeholder="Share your thoughts...") }}
+                            </div>
+                            {{ comment_form.submit(class="btn btn-primary") }}
+                        </form>
+                    {% else %}
+                        <p>Please <a href="{{ url_for('login', next=request.path) }}">login</a> to leave a comment.</p>
+                    {% endif %}
+
+                    <div class="comments-list mt-4">
+                        {% for comment in post.comments.order_by(Comment.created_at.desc()).all() %}
+                            <div class="comment card mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h6 class="card-subtitle mb-2 text-muted">{{ comment.user.username }}</h6>
+                                        <small class="text-muted">{{ comment.created_at.strftime('%B %d, %Y %I:%M %p') }}</small>
+                                    </div>
+                                    <p class="card-text">{{ comment.content }}</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <p class="text-muted">No comments yet. Be the first to comment!</p>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Post Actions -->
+                <div class="post-actions mt-4 mb-4">
+                    <div class="d-flex gap-3 align-items-center">
+                        {% if current_user.is_authenticated %}
+                            <button class="btn btn-outline-primary btn-sm like-button" 
+                                    data-post-slug="{{ post.slug }}"
+                                    data-liked="{{ 'true' if current_user.post_likes.filter_by(post_id=post.id).first() else 'false' }}">
+                                <i class="fas fa-heart"></i> 
+                                <span class="likes-count">{{ post.likes.count() }}</span> Likes
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm save-button"
+                                    data-post-slug="{{ post.slug }}"
+                                    data-saved="{{ 'true' if current_user.saved_posts.filter_by(post_id=post.id).first() else 'false' }}">
+                                <i class="fas fa-bookmark"></i> 
+                                <span class="save-text">{{ 'Saved' if current_user.saved_posts.filter_by(post_id=post.id).first() else 'Save for Later' }}</span>
+                            </button>
+                        {% else %}
+                            <a href="{{ url_for('login', next=request.path) }}" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-heart"></i> {{ post.likes.count() }} Likes
+                            </a>
+                            <a href="{{ url_for('login', next=request.path) }}" class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-bookmark"></i> Save for Later
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Like button functionality
+    const likeButton = document.querySelector('.like-button');
+    if (likeButton) {
+        likeButton.addEventListener('click', async function() {
+            const slug = this.dataset.postSlug;
+            try {
+                const response = await fetch(`/blog/${slug}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const likesCount = this.querySelector('.likes-count');
+                    likesCount.textContent = data.likes_count;
+                    
+                    if (data.action === 'liked') {
+                        this.classList.remove('btn-outline-primary');
+                        this.classList.add('btn-primary');
+                    } else {
+                        this.classList.remove('btn-primary');
+                        this.classList.add('btn-outline-primary');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+    // Save button functionality
+    const saveButton = document.querySelector('.save-button');
+    if (saveButton) {
+        saveButton.addEventListener('click', async function() {
+            const slug = this.dataset.postSlug;
+            try {
+                const response = await fetch(`/blog/${slug}/save`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    const saveText = this.querySelector('.save-text');
+                    
+                    if (data.action === 'saved') {
+                        this.classList.remove('btn-outline-secondary');
+                        this.classList.add('btn-secondary');
+                        saveText.textContent = 'Saved';
+                    } else {
+                        this.classList.remove('btn-secondary');
+                        this.classList.add('btn-outline-secondary');
+                        saveText.textContent = 'Save for Later';
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
+
                 <!-- Social Sharing -->
-                <div class="share-buttons mt-5">
+                <div class="share-buttons mt-4">
                     <h5>Share this article:</h5>
                     <div class="d-flex gap-2">
                         <a href="https://twitter.com/intent/tweet?url={{ url_for('blog_post', slug=post.slug, _external=True) }}&text={{ post.title }}"

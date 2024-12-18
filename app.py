@@ -32,7 +32,7 @@ login_manager.login_message = 'Please log in to access this page.'
 
 db.init_app(app)
 
-from models import User, Policy, BlogPost
+from models import User, Policy, BlogPost, Comment, PostLike, SavedPost
 
 @login_manager.user_loader
 def load_user(id):
@@ -303,7 +303,64 @@ def blog():
 @app.route('/blog/<string:slug>')
 def blog_post(slug):
     post = BlogPost.query.filter_by(slug=slug, published=True).first_or_404()
-    return render_template('blog/post.html', post=post)
+    comment_form = CommentForm()
+    return render_template('blog/post.html', post=post, comment_form=comment_form)
+
+@app.route('/blog/<string:slug>/comment', methods=['POST'])
+@login_required
+def add_comment(slug):
+    post = BlogPost.query.filter_by(slug=slug, published=True).first_or_404()
+    form = CommentForm()
+    if form.validate_on_submit():
+        comment = Comment(
+            content=form.content.data,
+            user_id=current_user.id,
+            post_id=post.id
+        )
+        db.session.add(comment)
+        db.session.commit()
+        flash('Your comment has been posted!', 'success')
+@app.route('/blog/<string:slug>/like', methods=['POST'])
+@login_required
+def like_post(slug):
+    post = BlogPost.query.filter_by(slug=slug, published=True).first_or_404()
+    existing_like = PostLike.query.filter_by(user_id=current_user.id, post_id=post.id).first()
+    
+    if existing_like:
+        db.session.delete(existing_like)
+        action = 'unliked'
+    else:
+        like = PostLike(user_id=current_user.id, post_id=post.id)
+        db.session.add(like)
+        action = 'liked'
+    
+    db.session.commit()
+    return jsonify({
+        'success': True,
+        'action': action,
+        'likes_count': post.likes.count()
+    })
+
+@app.route('/blog/<string:slug>/save', methods=['POST'])
+@login_required
+def save_post(slug):
+    post = BlogPost.query.filter_by(slug=slug, published=True).first_or_404()
+    existing_save = SavedPost.query.filter_by(user_id=current_user.id, post_id=post.id).first()
+    
+    if existing_save:
+        db.session.delete(existing_save)
+        action = 'unsaved'
+    else:
+        save = SavedPost(user_id=current_user.id, post_id=post.id)
+        db.session.add(save)
+        action = 'saved'
+    
+    db.session.commit()
+    return jsonify({
+        'success': True,
+        'action': action
+    })
+    return redirect(url_for('blog_post', slug=slug))
 
 @app.route('/blog/create', methods=['GET', 'POST'])
 @login_required
