@@ -33,6 +33,7 @@ login_manager.login_message = 'Please log in to access this page.'
 db.init_app(app)
 
 from models import User, Policy, BlogPost, Comment, PostLike, SavedPost
+from forms import LoginForm, RegistrationForm, ContactForm, QuoteForm, BlogPostForm, CommentForm
 
 @login_manager.user_loader
 def load_user(id):
