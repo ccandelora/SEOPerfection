@@ -185,11 +185,15 @@ def handle_message(data):
         db.session.add(message)
         db.session.commit()
         
-        # Emit the message back to all clients
+        # Emit the message back to all clients with customization options
         emit('new_message', {
             'message': message.content,
             'timestamp': message.created_at.strftime('%-I:%M %p').lower() + ' est',
-            'is_user': True
+            'is_user': True,
+            'options': {
+                'theme': 'modern',
+                'type': ''  # Can be info, warning, success
+            }
         }, broadcast=True)
         
         # Simulate support response after a brief delay

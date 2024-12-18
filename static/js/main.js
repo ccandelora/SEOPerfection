@@ -175,17 +175,29 @@ function getESTTime() {
     }).toLowerCase() + ' est';
 }
 
-function appendMessage(message, timestamp, isUser) {
+function formatMessage(message) {
+    // Basic markdown-like formatting
+    return message
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/\[(.*?)\]/g, '<span class="highlight">$1</span>');
+}
+
+function appendMessage(message, timestamp, isUser, options = {}) {
     if (!chatMessages) {
         console.error('Chat messages container not found');
         return;
     }
     
+    const theme = options.theme || 'modern';
+    const type = options.type || '';
+    const formattedMessage = formatMessage(message);
+    
     const messageDiv = document.createElement('div');
-    messageDiv.className = `chat-message ${isUser ? 'user-message' : 'support-message'}`;
+    messageDiv.className = `chat-message ${isUser ? 'user-message' : 'support-message'} theme-${theme} ${type ? 'message-' + type : ''}`;
     messageDiv.style.opacity = '0';  // Start invisible
     messageDiv.innerHTML = `
-        <div class="message-content">${message}</div>
+        <div class="message-content">${formattedMessage}</div>
         <small class="message-time">${typeof timestamp === 'string' ? timestamp : getESTTime()} EST</small>
     `;
     

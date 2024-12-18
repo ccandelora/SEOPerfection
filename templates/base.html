@@ -262,6 +262,56 @@
         animation-name: slideInLeft;
     }
 
+    /* Message Types */
+    .message-info {
+        background: var(--bs-info) !important;
+        color: white;
+    }
+
+    .message-warning {
+        background: var(--bs-warning) !important;
+        color: var(--bs-dark);
+    }
+
+    .message-success {
+        background: var(--bs-success) !important;
+        color: white;
+    }
+
+    /* Message Formatting */
+    .chat-message .message-content strong {
+        font-weight: 600;
+    }
+
+    .chat-message .message-content em {
+        font-style: italic;
+    }
+
+    .chat-message .message-content .highlight {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+
+    /* Message Themes */
+    .theme-modern {
+        border-radius: 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .theme-classic {
+        border-radius: 5px;
+        border: 1px solid rgba(0,0,0,0.1);
+    }
+
+    .theme-bubble {
+        border-radius: 20px 20px 5px 20px;
+    }
+
+    .support-message.theme-bubble {
+        border-radius: 20px 20px 20px 5px;
+    }
+
     .chat-input {
         padding: 10px;
         border-top: 1px solid #eee;
