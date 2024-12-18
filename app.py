@@ -1,17 +1,15 @@
 import os
 from flask import Flask, render_template, request, flash, redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import logging
-from forms import ContactForm, QuoteForm
+from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm
+from urllib.parse import urlparse
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
-class Base(DeclarativeBase):
-    pass
+from database import db
 
-db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 
 # Configuration
@@ -22,7 +20,75 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
     "pool_pre_ping": True,
 }
 
+# Initialize Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+login_manager.login_message = 'Please log in to access this page.'
+
 db.init_app(app)
+
+from models import User, Policy
+
+@login_manager.user_loader
+def load_user(id):
+    return User.query.get(int(id))
+
+# Authentication routes
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+    
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user is None or not user.check_password(form.password.data):
+            flash('Invalid username or password', 'error')
+            return redirect(url_for('login'))
+        
+        login_user(user)
+        next_page = request.args.get('next')
+        if not next_page or urlparse(next_page).netloc != '':
+            next_page = url_for('profile')
+        return redirect(next_page)
+    
+    return render_template('auth/login.html', title='Sign In', form=form)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('profile'))
+    
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(
+            username=form.username.data,
+            email=form.email.data,
+            first_name=form.first_name.data,
+            last_name=form.last_name.data,
+            phone=form.phone.data,
+            address=form.address.data
+        )
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now registered!', 'success')
+        return redirect(url_for('login'))
+    
+    return render_template('auth/register.html', title='Register', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+@app.route('/profile')
+@login_required
+def profile():
+    policies = current_user.policies.all()
+    return render_template('auth/profile.html', title='My Profile', policies=policies)
 
 # Route handlers
 @app.route('/')
