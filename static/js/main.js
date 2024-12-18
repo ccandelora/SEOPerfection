@@ -240,9 +240,10 @@ function toggleChat() {
     const minimizeIcon = document.querySelector('.chat-minimize i');
     
     if (messagesDiv && inputDiv) {
-        if (messagesDiv.style.display === 'none') {
+        const isVisible = window.getComputedStyle(messagesDiv).display !== 'none';
+        if (!isVisible) {
             messagesDiv.style.display = 'flex';
-            inputDiv.style.display = 'block';
+            inputDiv.style.display = 'flex';
             minimizeIcon.className = 'fas fa-minus';
         } else {
             messagesDiv.style.display = 'none';
@@ -251,6 +252,19 @@ function toggleChat() {
         }
     }
 }
+
+// Initialize chat in collapsed state
+document.addEventListener('DOMContentLoaded', function() {
+    const messagesDiv = document.getElementById('chatMessages');
+    const inputDiv = document.querySelector('.chat-input');
+    const minimizeIcon = document.querySelector('.chat-minimize i');
+    
+    if (messagesDiv && inputDiv) {
+        messagesDiv.style.display = 'none';
+        inputDiv.style.display = 'none';
+        minimizeIcon.className = 'fas fa-plus';
+    }
+});
 
 // Load chat history when logged in
 function loadChatHistory() {
