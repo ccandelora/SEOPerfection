@@ -188,7 +188,7 @@ def handle_message(data):
         # Emit the message back to all clients
         emit('new_message', {
             'message': message.content,
-            'timestamp': message.created_at.strftime('%H:%M'),
+            'timestamp': message.created_at.strftime('%-I:%M %p').lower() + ' est',
             'is_user': True
         }, broadcast=True)
         
@@ -223,7 +223,7 @@ def chat_history():
     
     return jsonify([{
         'content': msg.content,
-        'timestamp': msg.created_at.strftime('%H:%M'),
+        'timestamp': msg.created_at.strftime('%-I:%M %p').lower() + ' est',
         'is_user': msg.is_user_message
     } for msg in messages])
 
