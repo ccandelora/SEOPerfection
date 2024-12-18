@@ -172,7 +172,7 @@ function getESTTime() {
         hour: 'numeric',
         minute: '2-digit',
         hour12: true
-    }).toLowerCase();
+    }).toLowerCase() + ' est';
 }
 
 function appendMessage(message, timestamp, isUser) {

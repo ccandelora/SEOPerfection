@@ -207,7 +207,7 @@ def handle_message(data):
         # Emit support response to all clients
         emit('new_message', {
             'message': support_message,
-            'timestamp': datetime.utcnow().strftime('%H:%M'),
+            'timestamp': datetime.now().strftime('%-I:%M %p').lower() + ' est',
             'is_user': False
         }, broadcast=True)
     except Exception as e:
