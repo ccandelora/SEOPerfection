@@ -194,7 +194,7 @@ def handle_message(data):
         
         # Simulate support response after a brief delay
         socketio.sleep(1)
-        support_message = "Thank you for your message. A support representative will be with you shortly."
+        support_message = "Thank you for contacting Prime Insurance Services. How can we assist you with your insurance needs today? Our team typically responds within a few minutes during business hours (9 AM - 5 PM EST)."
         support_chat = models.ChatMessage(
             user_id=current_user.id if current_user.is_authenticated else None,
             content=support_message,

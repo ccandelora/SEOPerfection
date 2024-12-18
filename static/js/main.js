@@ -165,6 +165,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // Chat message handling
+function getESTTime() {
+    const date = new Date();
+    return date.toLocaleTimeString('en-US', {
+        timeZone: 'America/New_York',
+        hour12: true,
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
 function appendMessage(message, timestamp, isUser) {
     if (!chatMessages) {
         console.error('Chat messages container not found');
@@ -175,7 +185,7 @@ function appendMessage(message, timestamp, isUser) {
     messageDiv.className = `chat-message ${isUser ? 'user-message' : 'support-message'}`;
     messageDiv.innerHTML = `
         <div class="message-content">${message}</div>
-        <small class="message-time">${timestamp}</small>
+        <small class="message-time">${typeof timestamp === 'string' ? timestamp : getESTTime()} EST</small>
     `;
     chatMessages.appendChild(messageDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
