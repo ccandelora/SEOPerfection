@@ -169,10 +169,10 @@ function getESTTime() {
     const date = new Date();
     return date.toLocaleTimeString('en-US', {
         timeZone: 'America/New_York',
-        hour12: true,
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+    }).toLowerCase();
 }
 
 function appendMessage(message, timestamp, isUser) {
