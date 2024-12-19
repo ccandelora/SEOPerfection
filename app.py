@@ -2,8 +2,15 @@ import os
 from flask import Flask, render_template, request, flash, redirect, url_for, jsonify
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import logging
-from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm, EditProfileForm
-from forms import ContactForm, QuoteForm, LoginForm, RegistrationForm, EditProfileForm, AutoInsuranceCalculatorForm
+from forms import (
+    ContactForm, 
+    QuoteForm, 
+    LoginForm, 
+    RegistrationForm, 
+    EditProfileForm, 
+    AutoInsuranceCalculatorForm, 
+    BlogPostForm
+)
 from urllib.parse import urlparse
 from flask_socketio import SocketIO, emit
 from datetime import datetime
